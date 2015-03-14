@@ -16,5 +16,4 @@
 1. `npm install`
 1. `bower install`
 1. `npm install --global gulp`
-1. `gulp build`
-1. `git subtree push --prefix dist origin gh-pages`
+1. `./deploy.sh`
