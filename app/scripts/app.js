@@ -8,7 +8,7 @@ var SvgScribblerApp = React.createClass({
     return {
       lines: [{
         points: [],
-        stroke: '#ff0000',
+        stroke: '#8e179e',
         fill: '#ffffff',
         strokeWidth: 3
       }],
