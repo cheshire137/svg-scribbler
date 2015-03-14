@@ -16,6 +16,13 @@ var SvgScribblerApp = React.createClass({
       isDrawing: false
     };
   },
+  adjustSvgSize: function() {
+    var svgWrapper = $('.svg-container');
+    var footer = $('.footer');
+    var height = $(window).height();
+    height = height - svgWrapper.offset().top - footer.height();
+    svgWrapper.css('height', height);
+  },
   componentDidMount: function() {
     var self = this;
     $('#stroke-color-picker').spectrum({
@@ -34,6 +41,7 @@ var SvgScribblerApp = React.createClass({
         self.updateCurrentLine(line);
       }
     });
+    this.adjustSvgSize();
   },
   doesPointExist: function(line, coords) {
     for (var i=0; i<line.length; i++) {
@@ -200,12 +208,12 @@ var SvgScribblerApp = React.createClass({
         <div className="tab-content">
           <div role="tabpanel" className="tab-pane fade in active" id="canvas-tab">
             <div className="color-controls">
-              <div className="row">
-                <div className="col-sm-6">
+              <div className="form-inline">
+                <div className="form-group">
                   <label htmlFor="stroke-color-picker">Border:</label>
                   <input type="text" id="stroke-color-picker" className="color-picker" />
                 </div>
-                <div className="col-sm-6">
+                <div className="form-group">
                   <label htmlFor="fill-color-picker">Fill:</label>
                   <input type="text" id="fill-color-picker" className="color-picker" />
                 </div>

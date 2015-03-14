@@ -27,9 +27,25 @@ $fa-font-path: "../bower_components/fontawesome/fonts";
     }
 }
 
+.tab-content > .active {
+    padding-top: 10px;
+}
+
+.page-header {
+    margin-top: 0;
+}
+
+.form-inline {
+    .form-group {
+        & + .form-group {
+            margin-left: 20px;
+        }
+    }
+}
+
 .svg-container {
     position: relative;
-    width: 500px;
+    width: 100%;
     height: 250px;
 
     .svg-canvas, .svg-result {
