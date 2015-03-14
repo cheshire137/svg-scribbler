@@ -9943,6 +9943,13 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   *zoom: 1;
 }
 
+.color-controls {
+  margin-bottom: 10px;
+}
+.color-controls label {
+  margin-right: 10px;
+}
+
 .svg-container {
   position: relative;
   width: 500px;
