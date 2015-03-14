@@ -16,6 +16,7 @@ dist/bower_components/jquery/dist/*
 
 dist/bower_components/spectrum/*
 !dist/bower_components/spectrum/spectrum.js
+!dist/bower_components/spectrum/spectrum.css
 
 dist/bower_components/js-base64/*
 !dist/bower_components/js-base64/base64.min.js
