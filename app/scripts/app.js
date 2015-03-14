@@ -1,53 +1,69 @@
 /** @jsx React.DOM */
 
 var React = window.React = require('react'),
-    Timer = require('./ui/Timer'),
     mountNode = document.getElementById('app');
 
-var TodoList = React.createClass({
-  render: function() {
-    var createItem = function(itemText) {
-      return <li>{itemText}</li>;
-    };
-    return <ul>{this.props.items.map(createItem)}</ul>;
-  }
-});
-
-var TodoApp = React.createClass({
+var SvgScribblerApp = React.createClass({
   getInitialState: function() {
-    return {items: [], text: '', shape: 'circle'};
+    return {
+      points: [],
+      shapeStyle: {
+        stroke: 'rgb(255,0,0)',
+        fill: 'rgb(255,255,255)',
+        strokeWidth: 3
+      }
+    };
   },
-  onChange: function(e) {
-    this.setState({text: e.target.value});
+  onAddPoint: function(e) {
+    var canvas = $(e.target);
+    var offset = canvas.offset();
+    var left = offset.left;
+    var top = offset.top;
+    var x = e.pageX - left;
+    var y = e.pageY - top;
+    var clickedExistingPoint = false;
+    var points = this.state.points;
+    for (var i=0; i<this.state.points.length; i++) {
+      var point = this.state.points[i];
+      if (y > point.top && y < point.top + point.height &&
+          x > point.left && x < point.left + point.width) {
+        alert('clicked a point', point);
+        clickedExistingPoint = true;
+      }
+    }
+    if (!clickedExistingPoint) {
+      var newPoint = {left: x, top: y, width: 10, height: 10};
+      this.setState({points: this.state.points.concat([newPoint])});
+    }
   },
-  onChooseShape: function(e) {
-    this.setState({shape: e.target.value});
-  },
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var nextItems = this.state.items.concat([this.state.text]);
-    var nextText = '';
-    this.setState({items: nextItems, text: nextText});
+  getPointsList: function() {
+    var pairs = [];
+    for (var i=0; i<this.state.points.length; i++) {
+      var point = this.state.points[i];
+      pairs.push(point.left + ',' + point.top);
+    }
+    return pairs.join(' ');
   },
   render: function() {
     return (
       <div>
-        <h3>TODO</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <select class="form-control" onChange={this.onChooseShape}>
-            <option value="circle">circle</option>
-            <option value="rect">rectangle</option>
-            <option value="ellipse">ellipse</option>
-          </select>
-          <p>currently: {this.state.shape}</p>
-          <input onChange={this.onChange} value={this.state.text} />
-          <button>{'Add #' + (this.state.items.length + 1)}</button>
-        </form>
-        <Timer />
+        <div className="svg-container clearfix">
+          <svg className="svg-result">
+            <polyline points={this.getPointsList()} style={this.state.shapeStyle} />
+          </svg>
+          <canvas className="svg-canvas" onClick={this.onAddPoint}></canvas>
+        </div>
+        <p>points:</p>
+        <ul>
+        {
+          this.state.points.map(function(point) {
+            return <li>{point.left}, {point.top}</li>
+          })
+        }
+        </ul>
       </div>
     );
   }
 });
 
-React.render(<TodoApp />, mountNode);
+React.render(<SvgScribblerApp />, mountNode);
