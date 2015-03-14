@@ -192,56 +192,59 @@ var SvgScribblerApp = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div role="tabpanel">
-        <ul className="nav nav-tabs" role="tablist">
-          <li role="presentation" className="active">
-            <a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
-              Draw
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
-              View SVG Source
-            </a>
-          </li>
-        </ul>
-        <div className="tab-content">
-          <div role="tabpanel" className="tab-pane fade in active" id="canvas-tab">
-            <div className="color-controls">
-              <div className="form-inline">
-                <div className="form-group">
-                  <label htmlFor="stroke-color-picker">Border:</label>
-                  <input type="text" id="stroke-color-picker" className="color-picker" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="fill-color-picker">Fill:</label>
-                  <input type="text" id="fill-color-picker" className="color-picker" />
+      <div>
+        <div className="page-header clearfix">
+          <button type="button" className="pull-right btn btn-info download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
+            <i className="fa fa-download"></i>
+            Download SVG
+          </button>
+          <h1>SVG Scribbler</h1>
+        </div>
+        <div role="tabpanel">
+          <ul className="nav nav-tabs" role="tablist">
+            <li role="presentation" className="active">
+              <a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
+                Draw
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
+                View SVG Source
+              </a>
+            </li>
+          </ul>
+          <div className="tab-content">
+            <div role="tabpanel" className="tab-pane fade in active" id="canvas-tab">
+              <div className="color-controls">
+                <div className="form-inline">
+                  <div className="form-group">
+                    <label htmlFor="stroke-color-picker">Border:</label>
+                    <input type="text" id="stroke-color-picker" className="color-picker" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="fill-color-picker">Fill:</label>
+                    <input type="text" id="fill-color-picker" className="color-picker" />
+                  </div>
                 </div>
               </div>
+              <div className="svg-container clearfix">
+                <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                  {
+                    this.state.lines.map(function(line) {
+                      if (line.points.length > 1) {
+                        return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
+                      }
+                    })
+                  }
+                </svg>
+                <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
+              </div>
             </div>
-            <div className="svg-container clearfix">
-              <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                {
-                  this.state.lines.map(function(line) {
-                    if (line.points.length > 1) {
-                      return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
-                    }
-                  })
-                }
-              </svg>
-              <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
+            <div role="tabpanel" className="tab-pane fade" id="source-tab">
+              <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
+    {this.getPolylineSource()}
+  &lt;/svg&gt;</pre>
             </div>
-          </div>
-          <div role="tabpanel" className="tab-pane fade" id="source-tab">
-            <p>
-              <button type="button" className="btn btn-info download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
-                <i className="fa fa-download"></i>
-                Download SVG
-              </button>
-            </p>
-            <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
-  {this.getPolylineSource()}
-&lt;/svg&gt;</pre>
           </div>
         </div>
       </div>
