@@ -77,8 +77,8 @@ var SvgScribblerApp = React.createClass({
     if (lastLine.points.length > 0) {
       var newLine = {
         points: [],
-        stroke: '#ff0000',
-        fill: '#ffffff',
+        stroke: lastLine.stroke,
+        fill: lastLine.fill,
         strokeWidth: 3
       };
       this.setState({lines: this.state.lines.concat(newLine)});
@@ -125,7 +125,7 @@ var SvgScribblerApp = React.createClass({
     var polylines = [];
     for (var i=0; i<this.state.lines.length; i++) {
       var line = this.state.lines[i];
-      if (line.points.length < 1) {
+      if (line.points.length < 2) {
         continue;
       }
       var svgPoints = [];
@@ -138,6 +138,37 @@ var SvgScribblerApp = React.createClass({
     }
     return polylines.join("\n") + "\n";
   },
+  downloadSvg: function(e) {
+    var button = $(e.target);
+    var svgEl = $('svg.svg-result');
+    var svgSource = $(svgEl.wrap('<div>').parent().html());
+    svgSource.find('*').removeAttr('data-reactid');
+    svgSource = svgSource.html();
+    svgSource = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg">' +
+                "\n" + svgSource + "\n</svg>";
+    svgEl.unwrap('<div>');
+    console.log(svgSource);
+    var b64 = Base64.encode(svgSource);
+    var fileName = 'svg-scribbler-' + moment().format('YYYY-MM-DD-hh-mm-ss-a') +
+                   '.svg';
+    var link = $('<a>').attr('href-lang', 'image/svg+xml').
+                        attr('href', "data:image/svg+xml;base64,\n" + b64).
+                        attr('download', fileName).text(' ');
+    $('body').append(link);
+    link[0].click();
+    link.remove();
+    button.blur();
+  },
+  downloadButtonStyle: function() {
+    var display;
+    if (this.state.lines.length > 1) {
+      display = 'inline-block';
+    } else {
+      var line = this.getCurrentLine();
+      display = line.points.length > 0 ? 'inline-block' : 'none';
+    }
+    return {display: display};
+  },
   render: function() {
     var self = this;
     return (
@@ -148,10 +179,12 @@ var SvgScribblerApp = React.createClass({
               <input type="text" className="color-picker" />
             </p>
             <div className="svg-container clearfix">
-              <svg className="svg-result">
+              <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 {
                   this.state.lines.map(function(line) {
-                    return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
+                    if (line.points.length > 1) {
+                      return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
+                    }
                   })
                 }
               </svg>
@@ -159,7 +192,13 @@ var SvgScribblerApp = React.createClass({
             </div>
           </div>
           <div className="col-md-6">
-            <pre>&lt;svg&gt;<br />
+            <p>
+              <button type="button" className="btn btn-info download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
+                <i className="fa fa-download"></i>
+                Download SVG
+              </button>
+            </p>
+            <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
   {this.getPolylineSource()}
 &lt;/svg&gt;</pre>
           </div>

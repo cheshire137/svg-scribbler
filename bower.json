@@ -6,6 +6,8 @@
     "bootstrap-sass-official": ">=3.3.0",
     "modernizr": "^2.8.3",
     "fontawesome": "~4.3.0",
-    "spectrum": "~1.6.1"
+    "spectrum": "~1.6.1",
+    "js-base64": "~2.1.7",
+    "moment": "~2.9.0"
   }
 }
