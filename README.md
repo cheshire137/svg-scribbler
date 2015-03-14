@@ -3,9 +3,9 @@
 ## How to Run/Develop
 
 1. `npm install`
-1. `bower install`
-1. `npm install --global gulp`
-1. `gulp watch`
+1. `npm start`
+
+The app runs at [http://localhost:3000](http://localhost:3000/).
 
 ## Screenshot
 
