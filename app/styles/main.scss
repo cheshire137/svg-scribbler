@@ -19,6 +19,14 @@ $fa-font-path: "../bower_components/fontawesome/fonts";
     *zoom: 1;
 }
 
+.color-controls {
+    margin-bottom: 10px;
+
+    label {
+        margin-right: 10px;
+    }
+}
+
 .svg-container {
     position: relative;
     width: 500px;

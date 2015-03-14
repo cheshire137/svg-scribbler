@@ -17,11 +17,19 @@ var SvgScribblerApp = React.createClass({
   },
   componentDidMount: function() {
     var self = this;
-    $('.color-picker').spectrum({
+    $('#stroke-color-picker').spectrum({
       color: this.state.lines[0].stroke,
       change: function(color) {
         var line = self.getCurrentLine();
         line.stroke = color.toRgbString();
+        self.updateCurrentLine(line);
+      }
+    });
+    $('#fill-color-picker').spectrum({
+      color: this.state.lines[0].fill,
+      change: function(color) {
+        var line = self.getCurrentLine();
+        line.fill = color.toRgbString();
         self.updateCurrentLine(line);
       }
     });
@@ -178,9 +186,18 @@ var SvgScribblerApp = React.createClass({
       <div>
         <div className="row">
           <div className="col-md-6">
-            <p>
-              <input type="text" className="color-picker" />
-            </p>
+            <div className="color-controls">
+              <div className="row">
+                <div className="col-sm-6">
+                  <label htmlFor="stroke-color-picker">Border:</label>
+                  <input type="text" id="stroke-color-picker" className="color-picker" />
+                </div>
+                <div className="col-sm-6">
+                  <label htmlFor="fill-color-picker">Fill:</label>
+                  <input type="text" id="fill-color-picker" className="color-picker" />
+                </div>
+              </div>
+            </div>
             <div className="svg-container clearfix">
               <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 {
