@@ -184,9 +184,21 @@ var SvgScribblerApp = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-6">
+      <div role="tabpanel">
+        <ul className="nav nav-tabs" role="tablist">
+          <li role="presentation" className="active">
+            <a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
+              Draw
+            </a>
+          </li>
+          <li role="presentation">
+            <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
+              View SVG Source
+            </a>
+          </li>
+        </ul>
+        <div className="tab-content">
+          <div role="tabpanel" className="tab-pane fade in active" id="canvas-tab">
             <div className="color-controls">
               <div className="row">
                 <div className="col-sm-6">
@@ -212,7 +224,7 @@ var SvgScribblerApp = React.createClass({
               <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
             </div>
           </div>
-          <div className="col-md-6">
+          <div role="tabpanel" className="tab-pane fade" id="source-tab">
             <p>
               <button type="button" className="btn btn-info download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
                 <i className="fa fa-download"></i>

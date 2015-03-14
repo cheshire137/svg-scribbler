@@ -1,10 +1,8 @@
 {
   "name": "svgscribbler",
   "version": "0.0.0",
-  "dependencies": {
-    "bower": "^1.3.12"
-  },
   "devDependencies": {
+    "bower": "^1.3.12",
     "del": "~0.1.3",
     "gulp": "~3.8.8",
     "gulp-autoprefixer": "~1.0.1",
@@ -33,8 +31,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "./node_modules/gulp/bin/gulp.js watch",
-    "postinstall": "./node_modules/bower/bin/bower install",
+    "start": "./node_modules/.bin/gulp watch",
+    "postinstall": "./node_modules/.bin/bower install",
     "test": "jest"
   },
   "jest": {
