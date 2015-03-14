@@ -7,12 +7,19 @@ var SvgScribblerApp = React.createClass({
   getInitialState: function() {
     return {
       points: [],
-      shapeStyle: {
-        stroke: 'rgb(255,0,0)',
-        fill: 'rgb(255,255,255)',
-        strokeWidth: 3
-      }
+      stroke: 'rgb(255,0,0)',
+      fill: 'rgb(255,255,255)',
+      strokeWidth: 3
     };
+  },
+  componentDidMount: function() {
+    var self = this;
+    $('.color-picker').spectrum({
+      color: this.state.stroke,
+      change: function(color) {
+        self.setState({stroke: color.toRgbString()});
+      }
+    });
   },
   onAddPoint: function(e) {
     var canvas = $(e.target);
@@ -44,23 +51,40 @@ var SvgScribblerApp = React.createClass({
     }
     return pairs.join(' ');
   },
+  shapeStyle: function() {
+    return {
+      stroke: this.state.stroke,
+      fill: this.state.fill,
+      strokeWidth: 3
+    };
+  },
+  chooseColorStyle: function() {
+    return {
+      backgroundColor: this.state.stroke,
+      color: this.state.fill
+    };
+  },
   render: function() {
     return (
       <div>
-        <div className="svg-container clearfix">
-          <svg className="svg-result">
-            <polyline points={this.getPointsList()} style={this.state.shapeStyle} />
-          </svg>
-          <canvas className="svg-canvas" onClick={this.onAddPoint}></canvas>
+        <div className="row">
+          <div className="col-md-6">
+            <p>
+              <input type="text" className="color-picker" />
+            </p>
+            <div className="svg-container clearfix">
+              <svg className="svg-result">
+                <polyline points={this.getPointsList()} style={this.shapeStyle()} />
+              </svg>
+              <canvas className="svg-canvas" onClick={this.onAddPoint}></canvas>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <pre>&lt;svg&gt;<br />
+  &lt;polyline points="{this.getPointsList()}" style="stroke: {this.state.stroke}; fill: {this.state.fill}; stroke-width: {this.state.strokeWidth};" /&gt;<br />
+&lt;/svg&gt;</pre>
+          </div>
         </div>
-        <p>points:</p>
-        <ul>
-        {
-          this.state.points.map(function(point) {
-            return <li>{point.left}, {point.top}</li>
-          })
-        }
-        </ul>
       </div>
     );
   }
