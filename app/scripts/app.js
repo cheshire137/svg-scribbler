@@ -5,11 +5,12 @@ var React = window.React = require('react'),
 
 var SvgScribblerApp = React.createClass({
   getInitialState: function() {
+    var colors = randomColor({count: 2});
     return {
       lines: [{
         points: [],
-        stroke: '#8e179e',
-        fill: 'transparent',
+        stroke: colors[0],
+        fill: colors[1],
         strokeWidth: 3
       }],
       isDrawing: false

@@ -8,6 +8,7 @@
     "fontawesome": "~4.3.0",
     "spectrum": "~1.6.1",
     "js-base64": "~2.1.7",
-    "moment": "~2.9.0"
+    "moment": "~2.9.0",
+    "randomcolor": "~0.2.0"
   }
 }
