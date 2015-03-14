@@ -9,7 +9,7 @@ var SvgScribblerApp = React.createClass({
       lines: [{
         points: [],
         stroke: '#8e179e',
-        fill: '#ffffff',
+        fill: 'transparent',
         strokeWidth: 3
       }],
       isDrawing: false
@@ -134,7 +134,10 @@ var SvgScribblerApp = React.createClass({
         svgPoints.push(point.left + ',' + point.top);
       }
       svgPoints = svgPoints.join(' ');
-      polylines.push('  <polyline points="' + svgPoints + '" />');
+      var svgStyle = 'stroke: ' + line.stroke + '; fill: ' + line.fill +
+                     '; stroke-width: ' + line.strokeWidth;
+      polylines.push('  <polyline points="' + svgPoints + '" style="' +
+                     svgStyle + '" />');
     }
     return polylines.join("\n") + "\n";
   },
