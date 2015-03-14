@@ -1,7 +1,7 @@
-$icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/";
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
-$fa-font-path: "../../bower_components/fontawesome/fonts";
+$fa-font-path: "../bower_components/fontawesome/fonts";
 @import "fontawesome/scss/font-awesome";
 
 @import "spectrum";
