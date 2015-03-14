@@ -7,6 +7,7 @@ dist/bower_components/*
 !dist/bower_components/spectrum
 !dist/bower_components/js-base64
 !dist/bower_components/moment
+!dist/bower_components/fontawesome
 
 dist/bower_components/jquery/*
 !dist/bower_components/jquery/dist
@@ -26,3 +27,13 @@ dist/bower_components/moment/*
 
 dist/bower_components/moment/min/*
 !dist/bower_components/moment/min/moment.min.js
+
+dist/bower_components/fontawesome/*
+!dist/bower_components/fontawesome/fonts
+
+dist/bower_components/fontawesome/fonts/*
+!dist/bower_components/fontawesome/fonts/fontawesome-webfont.woff2
+!dist/bower_components/fontawesome/fonts/fontawesome-webfont.eot
+!dist/bower_components/fontawesome/fonts/fontawesome-webfont.svg
+!dist/bower_components/fontawesome/fonts/fontawesome-webfont.ttf
+!dist/bower_components/fontawesome/fonts/fontawesome-webfont.woff
