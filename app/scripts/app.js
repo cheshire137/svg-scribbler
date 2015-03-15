@@ -5,13 +5,19 @@ var React = window.React = require('react'),
 
 var LineItem = React.createClass({
   componentDidMount: function() {
-    $('[data-toggle="popover"]').popover({
+    var popoverSelector = '[data-toggle="popover"]';
+    $('body').popover({
+      selector: popoverSelector,
+      trigger: 'click',
       placement: 'left',
       html: true,
       content: function() {
         var link = $(this);
         return link.next('.line-settings').html();
       }
+    }).on('show.bs.popover', function(e) {
+      $(popoverSelector).not(e.target).popover('destroy');
+      $('.popover').remove();
     });
   },
   lineStyle: function() {
@@ -52,18 +58,30 @@ var LinesList = React.createClass({
     }
     return lines;
   },
+  getContainerStyle: function(visibleLines) {
+    var display;
+    if (visibleLines.length > 0) {
+      display = 'block';
+    } else {
+      display = 'none';
+    }
+    return {display: display};
+  },
   render: function() {
     var visibleLines = this.getVisibleLines();
     return (
-      <ul className="lines-list list-unstyled">
-        {
-          visibleLines.map(function(line) {
-            return (
-              <LineItem line={line} />
-            );
-          })
-        }
-      </ul>
+      <div style={this.getContainerStyle(visibleLines)}>
+        <h4>Scribbles:</h4>
+        <ul className="lines-list list-unstyled">
+          {
+            visibleLines.map(function(line) {
+              return (
+                <LineItem line={line} />
+              );
+            })
+          }
+        </ul>
+      </div>
     );
   }
 });
