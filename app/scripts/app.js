@@ -7,16 +7,29 @@ var React = window.React = require('react'),
 var SvgScribblerApp = React.createClass({
   getInitialState: function() {
     var colors = randomColor({count: 2});
+    var minStrokeWidth = 0;
+    var maxStrokeWidth = 20;
     return {
+      minStrokeWidth: minStrokeWidth,
+      maxStrokeWidth: maxStrokeWidth,
       lines: [{
         points: [],
         stroke: colors[0],
         fill: colors[1],
-        strokeWidth: 3,
+        strokeWidth: this.getRandomStrokeWidth(minStrokeWidth, maxStrokeWidth),
         id: 1
       }],
       isDrawing: false
     };
+  },
+  getRandomStrokeWidth: function(min, max) {
+    if (typeof min === 'undefined') {
+      min = this.state.minStrokeWidth;
+    }
+    if (typeof max === 'undefined') {
+      max = this.state.maxStrokeWidth;
+    }
+    return Math.floor(Math.random() * (max - min + 1) + min);
   },
   adjustSvgSize: function() {
     var svgWrapper = $('.svg-container');
@@ -285,9 +298,13 @@ var SvgScribblerApp = React.createClass({
                       <div className="form-group">
                         <label htmlFor="stroke-width-slider">Border width:</label>
                         <span className="range-input-wrapper">
-                          <span className="help-inline">0</span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min="0" defaultValue={this.getCurrentLine().strokeWidth} step="1" max="20" />
-                          <span className="help-inline">20</span>
+                          <span className="help-inline">
+                            {this.state.minStrokeWidth}
+                          </span>
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} defaultValue={this.getCurrentLine().strokeWidth} step="1" max={this.state.maxStrokeWidth} />
+                          <span className="help-inline">
+                            {this.state.maxStrokeWidth}
+                          </span>
                         </span>
                       </div>
                     </div>
