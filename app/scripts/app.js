@@ -4,6 +4,16 @@ var React = window.React = require('react'),
     mountNode = document.getElementById('app');
 
 var LineItem = React.createClass({
+  componentDidMount: function() {
+    $('[data-toggle="popover"]').popover({
+      placement: 'left',
+      html: true,
+      content: function() {
+        var link = $(this);
+        return link.next('.line-settings').html();
+      }
+    });
+  },
   lineStyle: function() {
     var line = this.props.line;
     return {
@@ -12,10 +22,20 @@ var LineItem = React.createClass({
       borderWidth: line.strokeWidth
     };
   },
+  getLineTitle: function() {
+    return 'Line ' + this.props.line.id;
+  },
   render: function() {
     return (
       <li className="line-item">
-        <span style={this.lineStyle()}></span>
+        <a data-toggle="popover" data-trigger="click" title={this.getLineTitle()}>
+          <span className="line-representation" style={this.lineStyle()}></span>
+        </a>
+        <div className="line-settings">
+          Color: {this.props.line.fill}<br />
+          Border color: {this.props.line.stroke}<br />
+          Border width: {this.props.line.strokeWidth}<br />
+        </div>
       </li>
     );
   }
@@ -56,7 +76,8 @@ var SvgScribblerApp = React.createClass({
         points: [],
         stroke: colors[0],
         fill: colors[1],
-        strokeWidth: 3
+        strokeWidth: 3,
+        id: 1
       }],
       isDrawing: false
     };
@@ -142,7 +163,8 @@ var SvgScribblerApp = React.createClass({
         points: [],
         stroke: lastLine.stroke,
         fill: lastLine.fill,
-        strokeWidth: 3
+        strokeWidth: 3,
+        id: this.state.lines.length + 1
       };
       this.setState({lines: this.state.lines.concat(newLine)});
     }
