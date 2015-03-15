@@ -9950,9 +9950,56 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   margin-right: 10px;
 }
 
+.tab-content > .active {
+  padding-top: 10px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.randomize-color,
+.clear-color {
+  margin-left: 3px;
+}
+
+.btn-flat {
+  color: #333;
+  background-color: #fff;
+  border-color: transparent;
+}
+.btn-flat:hover, .btn-flat:focus, .btn-flat.focus, .btn-flat:active, .btn-flat.active, .open > .btn-flat.dropdown-toggle {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: transparent;
+}
+.btn-flat:active, .btn-flat.active, .open > .btn-flat.dropdown-toggle {
+  background-image: none;
+}
+.btn-flat.disabled, .btn-flat.disabled:hover, .btn-flat.disabled:focus, .btn-flat.disabled.focus, .btn-flat.disabled:active, .btn-flat.disabled.active, .btn-flat[disabled], .btn-flat[disabled]:hover, .btn-flat[disabled]:focus, .btn-flat[disabled].focus, .btn-flat[disabled]:active, .btn-flat[disabled].active, fieldset[disabled] .btn-flat, fieldset[disabled] .btn-flat:hover, fieldset[disabled] .btn-flat:focus, fieldset[disabled] .btn-flat.focus, fieldset[disabled] .btn-flat:active, fieldset[disabled] .btn-flat.active {
+  background-color: #fff;
+  border-color: transparent;
+}
+.btn-flat .badge {
+  color: #fff;
+  background-color: #333;
+}
+
+.page-header {
+  margin-top: 0;
+}
+.page-header .btn {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.form-inline .form-group + .form-group {
+  margin-left: 40px;
+}
+
 .svg-container {
   position: relative;
-  width: 500px;
+  width: 100%;
   height: 250px;
 }
 .svg-container .svg-canvas, .svg-container .svg-result {
