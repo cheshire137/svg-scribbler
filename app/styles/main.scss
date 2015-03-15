@@ -57,6 +57,10 @@ a {
             display: none;
         }
 
+        .delete-line {
+            color: $brand-danger;
+        }
+
         .color-square {
             display: inline-block;
             width: 10px;

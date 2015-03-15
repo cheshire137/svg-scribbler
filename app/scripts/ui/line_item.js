@@ -44,6 +44,9 @@ var LineItem = React.createClass({
   getStrokeSquareStyle: function() {
     return {backgroundColor: this.props.line.stroke};
   },
+  deleteLine: function() {
+    this.props.onDeleteLine(this.props.line);
+  },
   render: function() {
     return (
       <li className="line-item">
@@ -58,6 +61,9 @@ var LineItem = React.createClass({
           <span className="color-square" style={this.getStrokeSquareStyle()}></span>
           {this.props.line.stroke}<br />
           Border width: {this.props.line.strokeWidth}<br />
+          <a className="delete-line" onClick={this.deleteLine}>
+            Delete
+          </a>
         </div>
       </li>
     );

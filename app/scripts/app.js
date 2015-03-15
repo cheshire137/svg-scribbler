@@ -217,6 +217,21 @@ var SvgScribblerApp = React.createClass({
     line.strokeWidth = slider.val();
     this.updateCurrentLine(line);
   },
+  deleteLine: function(lineToDelete) {
+    var index;
+    for (var i=0; i<this.state.lines.length; i++) {
+      var line = this.state.lines[i];
+      if (line.id === lineToDelete.id) {
+        index = i;
+        break;
+      }
+    }
+    if (typeof index !== 'undefined') {
+      var newLines = this.state.lines.slice(0, index).
+                          concat(this.state.lines.slice(index + 1));
+      this.setState({lines: newLines});
+    }
+  },
   render: function() {
     var self = this;
     return (
@@ -291,7 +306,7 @@ var SvgScribblerApp = React.createClass({
                   </div>
                 </div>
                 <div className="col-sm-3 col-md-2">
-                  <LinesList lines={this.state.lines} />
+                  <LinesList lines={this.state.lines} onDeleteLine={this.deleteLine} />
                 </div>
               </div>
             </div>

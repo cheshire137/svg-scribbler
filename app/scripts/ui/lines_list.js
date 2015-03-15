@@ -25,6 +25,7 @@ var LinesList = React.createClass({
   },
   render: function() {
     var visibleLines = this.getVisibleLines();
+    var self = this;
     return (
       <div style={this.getContainerStyle(visibleLines)}>
         <h4>Scribbles:</h4>
@@ -32,7 +33,7 @@ var LinesList = React.createClass({
           {
             visibleLines.map(function(line) {
               return (
-                <LineItem key={line.id} line={line} />
+                <LineItem key={line.id} line={line} onDeleteLine={self.props.onDeleteLine} />
               );
             })
           }
