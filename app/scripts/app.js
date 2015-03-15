@@ -37,7 +37,13 @@ var LineItem = React.createClass({
     };
   },
   getLineTitle: function() {
-    return 'Line ' + this.props.line.id;
+    return 'Scribble #' + this.props.line.id;
+  },
+  getFillSquareStyle: function() {
+    return {backgroundColor: this.props.line.fill};
+  },
+  getStrokeSquareStyle: function() {
+    return {backgroundColor: this.props.line.stroke};
   },
   render: function() {
     return (
@@ -46,8 +52,12 @@ var LineItem = React.createClass({
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>
         <div className="line-settings">
-          Fill: {this.props.line.fill}<br />
-          Border color: {this.props.line.stroke}<br />
+          Fill:
+          <span className="color-square" style={this.getFillSquareStyle()}></span>
+          {this.props.line.fill}<br />
+          Border color:
+          <span className="color-square" style={this.getStrokeSquareStyle()}></span>
+          {this.props.line.stroke}<br />
           Border width: {this.props.line.strokeWidth}<br />
         </div>
       </li>
