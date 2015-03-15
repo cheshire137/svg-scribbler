@@ -42,6 +42,7 @@ var SvgScribblerApp = React.createClass({
       }
     });
     this.adjustSvgSize();
+    $('[data-toggle="tooltip"]').tooltip();
   },
   doesPointExist: function(line, coords) {
     for (var i=0; i<line.length; i++) {
@@ -189,6 +190,24 @@ var SvgScribblerApp = React.createClass({
     }
     return {display: display};
   },
+  setLineColor: function(type, color) {
+    $('#' + type + '-color-picker').spectrum('set', color);
+    var line = this.getCurrentLine();
+    line[type] = color;
+    this.updateCurrentLine(line);
+  },
+  randomizeStroke: function() {
+    this.setLineColor('stroke', randomColor());
+  },
+  randomizeFill: function() {
+    this.setLineColor('fill', randomColor());
+  },
+  clearStroke: function() {
+    this.setLineColor('stroke', 'transparent');
+  },
+  clearFill: function() {
+    this.setLineColor('fill', 'transparent');
+  },
   render: function() {
     var self = this;
     return (
@@ -220,10 +239,22 @@ var SvgScribblerApp = React.createClass({
                   <div className="form-group">
                     <label htmlFor="stroke-color-picker">Border:</label>
                     <input type="text" id="stroke-color-picker" className="color-picker" />
+                    <button type="button" className="randomize-color btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
+                      <i className="fa fa-random"></i>
+                    </button>
+                    <button type="button" className="clear-color btn btn-flat btn-sm" data-toggle="tooltip" title="Clear" onClick={this.clearStroke}>
+                      <i className="fa fa-remove"></i>
+                    </button>
                   </div>
                   <div className="form-group">
                     <label htmlFor="fill-color-picker">Fill:</label>
                     <input type="text" id="fill-color-picker" className="color-picker" />
+                    <button type="button" className="randomize-color btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeFill}>
+                      <i className="fa fa-random"></i>
+                    </button>
+                    <button type="button" className="clear-color btn btn-flat btn-sm" data-toggle="tooltip" title="Clear" onClick={this.clearFill}>
+                      <i className="fa fa-remove"></i>
+                    </button>
                   </div>
                 </div>
               </div>

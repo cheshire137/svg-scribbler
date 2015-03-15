@@ -1,6 +1,7 @@
 node_modules/
 .sass-cache/
 app/bower_components/
+npm-debug.log
 
 dist/bower_components/*
 !dist/bower_components/jquery
