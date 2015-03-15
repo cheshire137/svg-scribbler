@@ -9963,6 +9963,38 @@ a {
   margin-left: 3px;
 }
 
+.range-input-wrapper {
+  white-space: nowrap;
+}
+.range-input-wrapper input[type="range"] {
+  display: inline-block;
+  margin: 0 5px;
+  width: 5em;
+  vertical-align: middle;
+}
+
+.lines-list .line-item .line-settings {
+  display: none;
+}
+.lines-list .line-item .color-square {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 0.3em;
+}
+.lines-list .line-item .line-representation {
+  display: inline-block;
+  width: 100%;
+  height: 15px;
+  border-style: solid;
+  border-radius: 2px;
+}
+.lines-list .line-item + .line-item {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #eeeeee;
+}
+
 .btn-flat {
   color: #333;
   background-color: #fff;
