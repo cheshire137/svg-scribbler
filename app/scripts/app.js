@@ -1,108 +1,8 @@
 /** @jsx React.DOM */
 
 var React = window.React = require('react'),
+    LinesList = require('./ui/lines_list'),
     mountNode = document.getElementById('app');
-
-var LineItem = React.createClass({
-  componentDidMount: function() {
-    var popoverSelector = '[data-toggle="popover"]';
-    $('body').popover({
-      selector: popoverSelector,
-      trigger: 'click',
-      placement: 'left',
-      html: true,
-      content: function() {
-        var link = $(this);
-        return link.next('.line-settings').html();
-      }
-    }).on('show.bs.popover', function(e) {
-      $(popoverSelector).not(e.target).popover('destroy');
-      $('.popover').remove();
-    });
-  },
-  getScaledStrokeWidth: function(x) {
-    if (x === 0) {
-      return x;
-    }
-    var maxDisplayWidth = 7;
-    var maxAllowedWidth = 20;
-    return Math.ceil((maxDisplayWidth * x) / maxAllowedWidth);
-  },
-  getLineStyle: function() {
-    var line = this.props.line;
-    return {
-      borderColor: line.stroke,
-      backgroundColor: line.fill,
-      borderWidth: this.getScaledStrokeWidth(line.strokeWidth)
-    };
-  },
-  getLineTitle: function() {
-    return 'Scribble #' + this.props.line.id;
-  },
-  getFillSquareStyle: function() {
-    return {backgroundColor: this.props.line.fill};
-  },
-  getStrokeSquareStyle: function() {
-    return {backgroundColor: this.props.line.stroke};
-  },
-  render: function() {
-    return (
-      <li className="line-item">
-        <a data-toggle="popover" data-trigger="click" title={this.getLineTitle()}>
-          <span className="line-representation" style={this.getLineStyle()}></span>
-        </a>
-        <div className="line-settings">
-          Fill:
-          <span className="color-square" style={this.getFillSquareStyle()}></span>
-          {this.props.line.fill}<br />
-          Border color:
-          <span className="color-square" style={this.getStrokeSquareStyle()}></span>
-          {this.props.line.stroke}<br />
-          Border width: {this.props.line.strokeWidth}<br />
-        </div>
-      </li>
-    );
-  }
-});
-
-var LinesList = React.createClass({
-  getVisibleLines: function() {
-    var lines = [];
-    for (var i=0; i<this.props.lines.length; i++) {
-      var line = this.props.lines[i];
-      if (line.points.length > 1) {
-        lines.push(line);
-      }
-    }
-    return lines;
-  },
-  getContainerStyle: function(visibleLines) {
-    var display;
-    if (visibleLines.length > 0) {
-      display = 'block';
-    } else {
-      display = 'none';
-    }
-    return {display: display};
-  },
-  render: function() {
-    var visibleLines = this.getVisibleLines();
-    return (
-      <div style={this.getContainerStyle(visibleLines)}>
-        <h4>Scribbles:</h4>
-        <ul className="lines-list list-unstyled">
-          {
-            visibleLines.map(function(line) {
-              return (
-                <LineItem key={line.id} line={line} />
-              );
-            })
-          }
-        </ul>
-      </div>
-    );
-  }
-});
 
 var SvgScribblerApp = React.createClass({
   getInitialState: function() {
@@ -371,7 +271,7 @@ var SvgScribblerApp = React.createClass({
                         <label htmlFor="stroke-width-slider">Border width:</label>
                         <span className="range-input-wrapper">
                           <span className="help-inline">0</span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min="0" value={this.getCurrentLine().strokeWidth} step="1" max="20" />
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min="0" defaultValue={this.getCurrentLine().strokeWidth} step="1" max="20" />
                           <span className="help-inline">20</span>
                         </span>
                       </div>
