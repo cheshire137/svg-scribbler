@@ -40,6 +40,17 @@ a {
     margin-left: 3px;
 }
 
+.range-input-wrapper {
+    white-space: nowrap;
+
+    input[type="range"] {
+        display: inline-block;
+        margin: 0 5px;
+        width: 5em;
+        vertical-align: middle;
+    }
+}
+
 .lines-list {
     .line-item {
         .line-settings {

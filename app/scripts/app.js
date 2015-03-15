@@ -20,12 +20,20 @@ var LineItem = React.createClass({
       $('.popover').remove();
     });
   },
-  lineStyle: function() {
+  getScaledStrokeWidth: function(x) {
+    if (x === 0) {
+      return x;
+    }
+    var maxDisplayWidth = 7;
+    var maxAllowedWidth = 20;
+    return Math.ceil((maxDisplayWidth * x) / maxAllowedWidth);
+  },
+  getLineStyle: function() {
     var line = this.props.line;
     return {
       borderColor: line.stroke,
       backgroundColor: line.fill,
-      borderWidth: line.strokeWidth
+      borderWidth: this.getScaledStrokeWidth(line.strokeWidth)
     };
   },
   getLineTitle: function() {
@@ -35,10 +43,10 @@ var LineItem = React.createClass({
     return (
       <li className="line-item">
         <a data-toggle="popover" data-trigger="click" title={this.getLineTitle()}>
-          <span className="line-representation" style={this.lineStyle()}></span>
+          <span className="line-representation" style={this.getLineStyle()}></span>
         </a>
         <div className="line-settings">
-          Color: {this.props.line.fill}<br />
+          Fill: {this.props.line.fill}<br />
           Border color: {this.props.line.stroke}<br />
           Border width: {this.props.line.strokeWidth}<br />
         </div>
@@ -76,7 +84,7 @@ var LinesList = React.createClass({
           {
             visibleLines.map(function(line) {
               return (
-                <LineItem line={line} />
+                <LineItem key={line.id} line={line} />
               );
             })
           }
@@ -181,7 +189,7 @@ var SvgScribblerApp = React.createClass({
         points: [],
         stroke: lastLine.stroke,
         fill: lastLine.fill,
-        strokeWidth: 3,
+        strokeWidth: lastLine.strokeWidth,
         id: this.state.lines.length + 1
       };
       this.setState({lines: this.state.lines.concat(newLine)});
@@ -293,6 +301,12 @@ var SvgScribblerApp = React.createClass({
   clearFill: function() {
     this.setLineColor('fill', 'transparent');
   },
+  setStrokeWidth: function(e) {
+    var slider = $(e.target);
+    var line = this.getCurrentLine();
+    line.strokeWidth = slider.val();
+    this.updateCurrentLine(line);
+  },
   render: function() {
     var self = this;
     return (
@@ -342,6 +356,14 @@ var SvgScribblerApp = React.createClass({
                         <button type="button" className="clear-color btn btn-flat btn-sm" data-toggle="tooltip" title="Clear" onClick={this.clearFill}>
                           <i className="fa fa-remove"></i>
                         </button>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="stroke-width-slider">Border width:</label>
+                        <span className="range-input-wrapper">
+                          <span className="help-inline">0</span>
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min="0" value={this.getCurrentLine().strokeWidth} step="1" max="20" />
+                          <span className="help-inline">20</span>
+                        </span>
                       </div>
                     </div>
                   </div>
