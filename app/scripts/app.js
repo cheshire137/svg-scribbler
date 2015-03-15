@@ -230,6 +230,14 @@ var SvgScribblerApp = React.createClass({
     line.strokeWidth = slider.val();
     this.updateCurrentLine(line);
   },
+  randomizeStrokeWidth: function() {
+    var line = this.getCurrentLine();
+    var currentStrokeWidth = line.strokeWidth;
+    while (currentStrokeWidth === line.strokeWidth) {
+      line.strokeWidth = this.getRandomStrokeWidth();
+    }
+    this.updateCurrentLine(line);
+  },
   deleteLine: function(lineToDelete) {
     var index;
     for (var i=0; i<this.state.lines.length; i++) {
@@ -301,11 +309,14 @@ var SvgScribblerApp = React.createClass({
                           <span className="help-inline">
                             {this.state.minStrokeWidth}
                           </span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} defaultValue={this.getCurrentLine().strokeWidth} step="1" max={this.state.maxStrokeWidth} />
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLine().strokeWidth} step="1" max={this.state.maxStrokeWidth} />
                           <span className="help-inline">
                             {this.state.maxStrokeWidth}
                           </span>
                         </span>
+                        <button type="button" className="randomize-stroke-width btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStrokeWidth}>
+                          <i className="fa fa-random"></i>
+                        </button>
                       </div>
                     </div>
                   </div>
