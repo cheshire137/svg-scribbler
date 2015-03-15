@@ -33,7 +33,7 @@ var LinesList = React.createClass({
           {
             visibleLines.map(function(line) {
               return (
-                <LineItem key={line.id} line={line} onDeleteLine={self.props.onDeleteLine} />
+                <LineItem key={line.id} line={line} onDeleteLine={self.props.onDeleteLine} updateLine={self.props.updateLine} loadLine={self.props.loadLine} />
               );
             })
           }

@@ -9,17 +9,22 @@ var SvgScribblerApp = React.createClass({
     var colors = randomColor({count: 2});
     var minStrokeWidth = 0;
     var maxStrokeWidth = 20;
+    var strokeWidth = this.getRandomStrokeWidth(minStrokeWidth, maxStrokeWidth);
     return {
       minStrokeWidth: minStrokeWidth,
       maxStrokeWidth: maxStrokeWidth,
+      nextStrokeColor: colors[0],
+      nextFillColor: colors[1],
+      nextStrokeWidth: strokeWidth,
       lines: [{
         points: [],
         stroke: colors[0],
         fill: colors[1],
-        strokeWidth: this.getRandomStrokeWidth(minStrokeWidth, maxStrokeWidth),
+        strokeWidth: strokeWidth,
         id: 1
       }],
-      isDrawing: false
+      isDrawing: false,
+      currentLineID: 1
     };
   },
   getRandomStrokeWidth: function(min, max) {
@@ -68,8 +73,18 @@ var SvgScribblerApp = React.createClass({
     }
     return false;
   },
-  getCurrentLine: function() {
-    var line = this.state.lines.slice(this.state.lines.length - 1)[0];
+  getCurrentLineIndex: function() {
+    for (var i=0; i<this.state.lines.length; i++) {
+      var line = this.state.lines[i];
+      if (line.id === this.state.currentLineID) {
+        return i;
+      }
+    }
+    console.error('could not find current line with ID',
+                  this.state.currentLineID);
+    return undefined;
+  },
+  copyLine: function(line) {
     var newLine = {};
     var props = Object.keys(line);
     for (var i=0; i<props.length; i++) {
@@ -83,17 +98,46 @@ var SvgScribblerApp = React.createClass({
     }
     return newLine;
   },
-  updateCurrentLine: function(line) {
-    var newLines = this.state.lines.slice(0, this.state.lines.length - 1);
-    newLines.push(line);
+  getCurrentLine: function() {
+    var index = this.getCurrentLineIndex();
+    if (typeof index === 'undefined') {
+      return;
+    }
+    var line = this.state.lines[index];
+    return this.copyLine(line);
+  },
+  updateCurrentLine: function(replacementLine) {
+    var index = this.getCurrentLineIndex();
+    if (typeof index === 'undefined') {
+      return;
+    }
+    var newLines = this.state.lines.slice(0, index).
+                        concat([replacementLine]).
+                        concat(this.state.lines.slice(index + 1));
     this.setState({lines: newLines});
   },
+  updateLine: function(replacementLine) {
+    var index;
+    for (var i=0; i<this.state.lines.length; i++) {
+      var line = this.state.lines[i];
+      if (line.id === replacementLine.id) {
+        index = i;
+        break;
+      }
+    }
+    if (typeof index !== 'undefined') {
+      var newLines = this.state.lines.slice(0, index).
+                          concat([replacementLine]).
+                          concat(this.state.lines.slice(index + 1));
+      this.setState({lines: newLines});
+    }
+  },
   addPoint: function(coords) {
-    var line = this.getCurrentLine();
+    var line = this.getLastLine();
     if (!this.doesPointExist(line, coords)) {
       var newPoint = {left: coords.x, top: coords.y, width: 10, height: 10};
       line.points.push(newPoint);
-      this.updateCurrentLine(line);
+      this.updateLine(line);
     }
   },
   getCanvasCoords: function(e) {
@@ -106,16 +150,17 @@ var SvgScribblerApp = React.createClass({
     return {x: x, y: y};
   },
   addNewLineIfNecessary: function() {
-    var lastLine = this.getCurrentLine();
+    var lastLine = this.getLastLine();
     if (lastLine.points.length > 0) {
       var newLine = {
         points: [],
-        stroke: lastLine.stroke,
-        fill: lastLine.fill,
-        strokeWidth: lastLine.strokeWidth,
+        stroke: this.state.nextStrokeColor,
+        fill: this.state.nextFillColor,
+        strokeWidth: this.state.nextStrokeWidth,
         id: this.state.lines.length + 1
       };
-      this.setState({lines: this.state.lines.concat(newLine)});
+      var newLines = this.state.lines.concat([newLine]);
+      this.setState({lines: newLines});
     }
   },
   onMouseDown: function(e) {
@@ -184,7 +229,6 @@ var SvgScribblerApp = React.createClass({
     svgSource = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg">' +
                 "\n" + svgSource + "\n</svg>";
     svgEl.unwrap('<div>');
-    console.log(svgSource);
     var b64 = Base64.encode(svgSource);
     var fileName = 'svg-scribbler-' + moment().format('YYYY-MM-DD-hh-mm-ss-a') +
                    '.svg';
@@ -206,36 +250,71 @@ var SvgScribblerApp = React.createClass({
     }
     return {display: display};
   },
-  setLineColor: function(type, color) {
-    $('#' + type + '-color-picker').spectrum('set', color);
-    var line = this.getCurrentLine();
-    line[type] = color;
-    this.updateCurrentLine(line);
+  getLastLine: function() {
+    return this.copyLine(this.state.lines[this.state.lines.length - 1]);
+  },
+  getLastLineWithoutPoints: function() {
+    for (var i=this.state.lines.length - 1; i>=0; i--) {
+      var line = this.state.lines[i];
+      if (line.points.length < 2) {
+        return this.copyLine(line);
+      }
+    }
+    return null;
   },
   randomizeStroke: function() {
-    this.setLineColor('stroke', randomColor());
+    var color = randomColor();
+    $('#stroke-color-picker').spectrum('set', color);
+    this.setState({nextStrokeColor: color});
+    var line = this.getLastLineWithoutPoints();
+    if (line) {
+      line.stroke = color;
+      this.updateLine(line);
+    }
   },
   randomizeFill: function() {
-    this.setLineColor('fill', randomColor());
+    var color = randomColor();
+    $('#fill-color-picker').spectrum('set', color);
+    this.setState({nextFillColor: color});
+    var line = this.getLastLineWithoutPoints();
+    if (line) {
+      line.fill = color;
+      this.updateLine(line);
+    }
   },
   clearStroke: function() {
-    this.setLineColor('stroke', 'transparent');
+    var color = 'transparent';
+    $('#stroke-color-picker').spectrum('set', color);
+    this.setState({nextStrokeColor: color});
+    var line = this.getLastLineWithoutPoints();
+    if (line) {
+      line.stroke = color;
+      this.updateLine(line);
+    }
   },
   clearFill: function() {
-    this.setLineColor('fill', 'transparent');
+    var color = 'transparent';
+    $('#fill-color-picker').spectrum('fill', color);
+    this.setState({nextFillColor: color});
+    var line = this.getLastLineWithoutPoints();
+    if (line) {
+      line.fill = color;
+      this.updateLine(line);
+    }
+  },
+  randomizeStrokeWidth: function() {
+    var strokeWidth = this.getRandomStrokeWidth();
+    this.setState({nextStrokeWidth: strokeWidth});
+    var line = this.getLastLineWithoutPoints();
+    if (line) {
+      line.strokeWidth = strokeWidth;
+      this.updateLine(line);
+    }
   },
   setStrokeWidth: function(e) {
     var slider = $(e.target);
     var line = this.getCurrentLine();
     line.strokeWidth = slider.val();
-    this.updateCurrentLine(line);
-  },
-  randomizeStrokeWidth: function() {
-    var line = this.getCurrentLine();
-    var currentStrokeWidth = line.strokeWidth;
-    while (currentStrokeWidth === line.strokeWidth) {
-      line.strokeWidth = this.getRandomStrokeWidth();
-    }
     this.updateCurrentLine(line);
   },
   deleteLine: function(lineToDelete) {
@@ -252,6 +331,18 @@ var SvgScribblerApp = React.createClass({
                           concat(this.state.lines.slice(index + 1));
       this.setState({lines: newLines});
     }
+  },
+  deleteCurrentLine: function() {
+    this.deleteLine({id: this.state.currentLineID});
+  },
+  loadLine: function(line) {
+    this.setState({currentLineID: line.id});
+    $('#fill-color-picker').spectrum('set', line.fill);
+    $('#stroke-color-picker').spectrum('set', line.stroke);
+  },
+  getCurrentLineStrokeWidth: function() {
+    var line = this.getCurrentLine();
+    return line.strokeWidth;
   },
   render: function() {
     var self = this;
@@ -284,6 +375,14 @@ var SvgScribblerApp = React.createClass({
                   <div className="color-controls">
                     <div className="form-inline">
                       <div className="form-group">
+                        <strong>
+                          Scribble #{this.state.currentLineID}
+                        </strong>
+                        <a className="delete-line" title="Delete" data-toggle="tooltip" onClick={this.deleteCurrentLine}>
+                          <i className="fa fa-remove"></i>
+                        </a>
+                      </div>
+                      <div className="form-group">
                         <label htmlFor="stroke-color-picker">Border:</label>
                         <input type="text" id="stroke-color-picker" className="color-picker" />
                         <button type="button" className="randomize-color btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
@@ -309,7 +408,7 @@ var SvgScribblerApp = React.createClass({
                           <span className="help-inline">
                             {this.state.minStrokeWidth}
                           </span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLine().strokeWidth} step="1" max={this.state.maxStrokeWidth} />
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} defaultValue={this.nextStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
                           <span className="help-inline">
                             {this.state.maxStrokeWidth}
                           </span>
@@ -334,7 +433,7 @@ var SvgScribblerApp = React.createClass({
                   </div>
                 </div>
                 <div className="col-sm-3 col-md-2">
-                  <LinesList lines={this.state.lines} onDeleteLine={this.deleteLine} />
+                  <LinesList lines={this.state.lines} onDeleteLine={this.deleteLine} updateLine={this.updateLine} loadLine={this.loadLine} />
                 </div>
               </div>
             </div>

@@ -4,20 +4,7 @@ var React = require('react');
 
 var LineItem = React.createClass({
   componentDidMount: function() {
-    var popoverSelector = '[data-toggle="popover"]';
-    $('body').popover({
-      selector: popoverSelector,
-      trigger: 'click',
-      placement: 'left',
-      html: true,
-      content: function() {
-        var link = $(this);
-        return link.next('.line-settings').html();
-      }
-    }).on('show.bs.popover', function(e) {
-      $(popoverSelector).not(e.target).popover('destroy');
-      $('.popover').remove();
-    });
+    $('[data-toggle="tooltip"]').tooltip();
   },
   getScaledStrokeWidth: function(x) {
     if (x === 0) {
@@ -47,24 +34,15 @@ var LineItem = React.createClass({
   deleteLine: function() {
     this.props.onDeleteLine(this.props.line);
   },
+  loadLine: function() {
+    this.props.loadLine(this.props.line);
+  },
   render: function() {
     return (
       <li className="line-item">
-        <a data-toggle="popover" data-trigger="click" title={this.getLineTitle()}>
+        <a onClick={this.loadLine} data-toggle="tooltip" title={this.getLineTitle()}>
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>
-        <div className="line-settings">
-          Fill:
-          <span className="color-square" style={this.getFillSquareStyle()}></span>
-          {this.props.line.fill}<br />
-          Border color:
-          <span className="color-square" style={this.getStrokeSquareStyle()}></span>
-          {this.props.line.stroke}<br />
-          Border width: {this.props.line.strokeWidth}<br />
-          <a className="delete-line" onClick={this.deleteLine}>
-            Delete
-          </a>
-        </div>
       </li>
     );
   }

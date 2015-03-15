@@ -51,14 +51,16 @@ a {
     }
 }
 
+.delete-line {
+    color: $brand-danger;
+    display: inline-block;
+    margin: 0 0.3em;
+}
+
 .lines-list {
     .line-item {
         .line-settings {
             display: none;
-        }
-
-        .delete-line {
-            color: $brand-danger;
         }
 
         .color-square {
