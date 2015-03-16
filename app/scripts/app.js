@@ -39,6 +39,9 @@ var SvgScribblerApp = React.createClass({
     height = height - svgWrapper.offset().top - footer.height();
     svgWrapper.css('height', height);
   },
+  onResize: function() {
+    this.adjustSvgSize();
+  },
   componentDidMount: function() {
     var self = this;
     $('#stroke-color-picker').spectrum({
@@ -59,6 +62,10 @@ var SvgScribblerApp = React.createClass({
     });
     this.adjustSvgSize();
     $('[data-toggle="tooltip"]').tooltip();
+    window.addEventListener('resize', this.onResize);
+  },
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this.onResize);
   },
   doesPointExist: function(line, coords) {
     for (var i=0; i<line.length; i++) {
