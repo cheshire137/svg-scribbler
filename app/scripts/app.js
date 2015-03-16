@@ -9,18 +9,14 @@ var SvgScribblerApp = React.createClass({
     var colors = randomColor({count: 2});
     var minStrokeWidth = 0;
     var maxStrokeWidth = 20;
-    var strokeWidth = this.getRandomStrokeWidth(minStrokeWidth, maxStrokeWidth);
     return {
       minStrokeWidth: minStrokeWidth,
       maxStrokeWidth: maxStrokeWidth,
-      nextStrokeColor: colors[0],
-      nextFillColor: colors[1],
-      nextStrokeWidth: strokeWidth,
       lines: [{
         points: [],
         stroke: colors[0],
         fill: colors[1],
-        strokeWidth: strokeWidth,
+        strokeWidth: this.getRandomStrokeWidth(minStrokeWidth, maxStrokeWidth),
         id: 1
       }],
       isDrawing: false,
@@ -154,13 +150,13 @@ var SvgScribblerApp = React.createClass({
     if (lastLine.points.length > 0) {
       var newLine = {
         points: [],
-        stroke: this.state.nextStrokeColor,
-        fill: this.state.nextFillColor,
-        strokeWidth: this.state.nextStrokeWidth,
+        stroke: lastLine.stroke,
+        fill: lastLine.fill,
+        strokeWidth: lastLine.strokeWidth,
         id: this.state.lines.length + 1
       };
       var newLines = this.state.lines.concat([newLine]);
-      this.setState({lines: newLines});
+      this.setState({lines: newLines, currentLineID: newLine.id});
     }
   },
   onMouseDown: function(e) {
@@ -265,8 +261,7 @@ var SvgScribblerApp = React.createClass({
   randomizeStroke: function() {
     var color = randomColor();
     $('#stroke-color-picker').spectrum('set', color);
-    this.setState({nextStrokeColor: color});
-    var line = this.getLastLineWithoutPoints();
+    var line = this.getCurrentLine();
     if (line) {
       line.stroke = color;
       this.updateLine(line);
@@ -275,8 +270,7 @@ var SvgScribblerApp = React.createClass({
   randomizeFill: function() {
     var color = randomColor();
     $('#fill-color-picker').spectrum('set', color);
-    this.setState({nextFillColor: color});
-    var line = this.getLastLineWithoutPoints();
+    var line = this.getCurrentLine();
     if (line) {
       line.fill = color;
       this.updateLine(line);
@@ -285,8 +279,7 @@ var SvgScribblerApp = React.createClass({
   clearStroke: function() {
     var color = 'transparent';
     $('#stroke-color-picker').spectrum('set', color);
-    this.setState({nextStrokeColor: color});
-    var line = this.getLastLineWithoutPoints();
+    var line = this.getCurrentLine();
     if (line) {
       line.stroke = color;
       this.updateLine(line);
@@ -295,8 +288,7 @@ var SvgScribblerApp = React.createClass({
   clearFill: function() {
     var color = 'transparent';
     $('#fill-color-picker').spectrum('fill', color);
-    this.setState({nextFillColor: color});
-    var line = this.getLastLineWithoutPoints();
+    var line = this.getCurrentLine();
     if (line) {
       line.fill = color;
       this.updateLine(line);
@@ -304,8 +296,7 @@ var SvgScribblerApp = React.createClass({
   },
   randomizeStrokeWidth: function() {
     var strokeWidth = this.getRandomStrokeWidth();
-    this.setState({nextStrokeWidth: strokeWidth});
-    var line = this.getLastLineWithoutPoints();
+    var line = this.getCurrentLine();
     if (line) {
       line.strokeWidth = strokeWidth;
       this.updateLine(line);
@@ -327,9 +318,10 @@ var SvgScribblerApp = React.createClass({
       }
     }
     if (typeof index !== 'undefined') {
+      var line = this.getLastLineWithoutPoints();
       var newLines = this.state.lines.slice(0, index).
                           concat(this.state.lines.slice(index + 1));
-      this.setState({lines: newLines});
+      this.setState({lines: newLines, currentLineID: line.id});
     }
   },
   deleteCurrentLine: function() {
@@ -341,8 +333,7 @@ var SvgScribblerApp = React.createClass({
     $('#stroke-color-picker').spectrum('set', line.stroke);
   },
   getCurrentLineStrokeWidth: function() {
-    var line = this.getCurrentLine();
-    return line.strokeWidth;
+    return this.getCurrentLine().strokeWidth;
   },
   render: function() {
     var self = this;
@@ -408,7 +399,7 @@ var SvgScribblerApp = React.createClass({
                           <span className="help-inline">
                             {this.state.minStrokeWidth}
                           </span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} defaultValue={this.nextStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
+                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
                           <span className="help-inline">
                             {this.state.maxStrokeWidth}
                           </span>
@@ -433,7 +424,7 @@ var SvgScribblerApp = React.createClass({
                   </div>
                 </div>
                 <div className="col-sm-3 col-md-2">
-                  <LinesList lines={this.state.lines} onDeleteLine={this.deleteLine} updateLine={this.updateLine} loadLine={this.loadLine} />
+                  <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
                 </div>
               </div>
             </div>

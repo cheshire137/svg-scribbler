@@ -25,21 +25,27 @@ var LineItem = React.createClass({
   getLineTitle: function() {
     return 'Scribble #' + this.props.line.id;
   },
-  getFillSquareStyle: function() {
-    return {backgroundColor: this.props.line.fill};
-  },
-  getStrokeSquareStyle: function() {
-    return {backgroundColor: this.props.line.stroke};
-  },
-  deleteLine: function() {
-    this.props.onDeleteLine(this.props.line);
-  },
   loadLine: function() {
     this.props.loadLine(this.props.line);
   },
+  getLineClass: function() {
+    var cssClass = 'line-item';
+    if (this.props.line.points.length < 2) {
+      cssClass += ' next-line';
+    }
+    if (this.props.currentLineID === this.props.line.id) {
+      cssClass += ' current-line';
+    } else {
+      cssClass += ' not-current-line';
+    }
+    return cssClass;
+  },
   render: function() {
     return (
-      <li className="line-item">
+      <li className={this.getLineClass()}>
+        <span className="current-indicator">
+          <i className="fa fa-chevron-right"></i>
+        </span>
         <a onClick={this.loadLine} data-toggle="tooltip" title={this.getLineTitle()}>
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>

@@ -59,6 +59,27 @@ a {
 
 .lines-list {
     .line-item {
+        position: relative;
+
+        &.next-line {
+            &:before {
+                content: "Next:";
+            }
+        }
+
+        .current-indicator {
+            position: absolute;
+            left: -14px;
+            bottom: 3px;
+            display: none;
+        }
+
+        &.current-line {
+            .current-indicator {
+                display: inline-block;
+            }
+        }
+
         .line-settings {
             display: none;
         }
@@ -80,8 +101,6 @@ a {
 
         & + .line-item {
             margin-top: 5px;
-            padding-top: 5px;
-            border-top: 1px solid $hr-border;
         }
     }
 }
