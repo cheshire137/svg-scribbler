@@ -307,7 +307,7 @@ var SvgScribblerApp = React.createClass({
   },
   clearFill: function() {
     var color = 'transparent';
-    $('#fill-color-picker').spectrum('fill', color);
+    $('#fill-color-picker').spectrum('set', color);
     var line = this.getCurrentLine();
     if (line) {
       line.fill = color;
