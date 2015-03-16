@@ -152,18 +152,31 @@ var SvgScribblerApp = React.createClass({
     var y = e.pageY - top;
     return {x: x, y: y};
   },
-  addNewLineIfNecessary: function() {
+  getNextLineID: function() {
+    var maxID = this.state.lines[0].id;
+    for (var i=0; i<this.state.lines.length; i++) {
+      var line = this.state.lines[i];
+      if (line.id > maxID) {
+        maxID = line.id;
+      }
+    }
+    return maxID + 1;
+  },
+  addNewLine: function() {
     var lastLine = this.getLastLine();
-    if (lastLine.points.length > 0) {
-      var newLine = {
-        points: [],
-        stroke: lastLine.stroke,
-        fill: lastLine.fill,
-        strokeWidth: lastLine.strokeWidth,
-        id: this.state.lines.length + 1
-      };
-      var newLines = this.state.lines.concat([newLine]);
-      this.setState({lines: newLines, currentLineID: newLine.id});
+    var newLine = {
+      points: [],
+      stroke: lastLine.stroke,
+      fill: lastLine.fill,
+      strokeWidth: lastLine.strokeWidth,
+      id: this.getNextLineID()
+    };
+    var newLines = this.state.lines.concat([newLine]);
+    this.setState({lines: newLines, currentLineID: newLine.id});
+  },
+  addNewLineIfNecessary: function() {
+    if (this.getLastLine().points.length > 1) {
+      this.addNewLine();
     }
   },
   onMouseDown: function(e) {
@@ -328,7 +341,8 @@ var SvgScribblerApp = React.createClass({
       var line = this.getLastLineWithoutPoints();
       var newLines = this.state.lines.slice(0, index).
                           concat(this.state.lines.slice(index + 1));
-      this.setState({lines: newLines, currentLineID: line.id});
+      this.loadLine(line);
+      this.setState({lines: newLines});
     }
   },
   deleteCurrentLine: function() {
@@ -341,6 +355,16 @@ var SvgScribblerApp = React.createClass({
   },
   getCurrentLineStrokeWidth: function() {
     return this.getCurrentLine().strokeWidth;
+  },
+  getDeleteLineStyle: function() {
+    var line = this.getCurrentLine();
+    var display;
+    if (line.points.length < 2 || this.state.lines.length === 1) {
+      display = 'none';
+    } else {
+      display = 'inline-block';
+    }
+    return {display: display};
   },
   render: function() {
     var self = this;
@@ -376,7 +400,7 @@ var SvgScribblerApp = React.createClass({
                         <strong>
                           Scribble #{this.state.currentLineID}
                         </strong>
-                        <a className="delete-line" title="Delete" data-toggle="tooltip" onClick={this.deleteCurrentLine}>
+                        <a className="delete-line" title="Delete" data-toggle="tooltip" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
                           <i className="fa fa-remove"></i>
                         </a>
                       </div>
