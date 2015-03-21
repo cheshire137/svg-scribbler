@@ -9,6 +9,10 @@ dist/bower_components/*
 !dist/bower_components/js-base64
 !dist/bower_components/moment
 !dist/bower_components/fontawesome
+!dist/bower_components/materialize
+
+dist/bower_components/materialize/*
+!dist/bower_components/materialize/font
 
 dist/bower_components/jquery/*
 !dist/bower_components/jquery/dist
