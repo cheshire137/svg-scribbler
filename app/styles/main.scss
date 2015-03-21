@@ -7,6 +7,8 @@ $fa-font-path: "../bower_components/fontawesome/fonts";
 
 @import "spectrum";
 
+$toolbar-button-padding: 0.5rem;
+
 .clearfix:before, .clearfix:after {
     content: " ";
     display: table;
@@ -37,10 +39,10 @@ a {
 }
 
 .range-input-wrapper {
+    margin: 0 $toolbar-button-padding;
     white-space: nowrap;
 
     input[type="range"] {
-        display: inline-block;
         margin: 0 5px;
         width: 5em;
         vertical-align: middle;
@@ -102,11 +104,11 @@ a {
 }
 
 .btn-sm {
-    padding: 0 1rem;
+    padding: 0 $toolbar-button-padding;
     line-height: 30px;
     height: 30px;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    margin-bottom: 0;
+    margin-left: $toolbar-button-padding;
 }
 
 .page-header {

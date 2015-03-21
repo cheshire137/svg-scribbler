@@ -83,6 +83,9 @@ var SvgScribblerApp = React.createClass({
     this.adjustSvgSize();
     window.addEventListener('resize', this.onResize);
   },
+  componentDidUpdate: function(prevProps, prevState) {
+    $('.tooltipped').tooltip();
+  },
   componentWillUnmount: function() {
     window.removeEventListener('resize', this.onResize);
   },
@@ -432,27 +435,27 @@ var SvgScribblerApp = React.createClass({
                       <strong>
                         Scribble #{this.state.currentLineID}
                       </strong>
-                      <a className="delete-line tooltipped" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
-                        <i className="fa fa-remove"></i>
+                      <a className="delete-line tooltipped" data-delay="20" data-position="top" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
+                        <i className="fa fa-trash-o"></i>
                       </a>
                     </div>
                     <div className="form-group">
                       <label htmlFor="fill-color-picker">Fill:</label>
                       <input type="text" id="fill-color-picker" className="color-picker" />
-                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-tooltip="Randomize" onClick={this.randomizeFill}>
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeFill}>
                         <i className="fa fa-random"></i>
                       </button>
-                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-tooltip="Clear" onClick={this.clearFill}>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearFill}>
                         <i className="fa fa-remove"></i>
                       </button>
                     </div>
                     <div className="form-group">
                       <label htmlFor="stroke-color-picker">Border:</label>
                       <input type="text" id="stroke-color-picker" className="color-picker" />
-                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-tooltip="Randomize" onClick={this.randomizeStroke}>
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStroke}>
                         <i className="fa fa-random"></i>
                       </button>
-                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-tooltip="Clear" onClick={this.clearStroke}>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearStroke}>
                         <i className="fa fa-remove"></i>
                       </button>
                       <span className="range-input-wrapper">
@@ -464,7 +467,7 @@ var SvgScribblerApp = React.createClass({
                           {this.state.maxStrokeWidth}
                         </span>
                       </span>
-                      <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal tooltipped" data-tooltip="Randomize" onClick={this.randomizeStrokeWidth}>
+                      <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStrokeWidth}>
                         <i className="fa fa-random"></i>
                       </button>
                     </div>

@@ -46,7 +46,7 @@ var LineItem = React.createClass({
         <span className="current-indicator">
           <i className="fa fa-chevron-right"></i>
         </span>
-        <a onClick={this.loadLine} data-toggle="tooltip" title={this.getLineTitle()}>
+        <a onClick={this.loadLine} className="tooltipped" data-delay="20" data-position="left" data-tooltip={this.getLineTitle()}>
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>
       </li>
