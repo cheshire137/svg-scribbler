@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "~2.1.1",
-    "bootstrap-sass-official": ">=3.3.0",
     "modernizr": "^2.8.3",
     "fontawesome": "~4.3.0",
     "spectrum": "~1.6.1",
     "js-base64": "~2.1.7",
     "moment": "~2.9.0",
-    "randomcolor": "~0.2.0"
+    "randomcolor": "~0.2.0",
+    "materialize": "~0.95.3"
   }
 }

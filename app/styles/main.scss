@@ -1,5 +1,6 @@
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/";
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+$roboto-font-path: "../bower_components/materialize/font/roboto/";
+$icons-font-path: "../bower_components/materialize/font/material-design-icons/";
+@import "materialize/sass/materialize";
 
 $fa-font-path: "../bower_components/fontawesome/fonts";
 @import "fontawesome/scss/font-awesome";
@@ -52,7 +53,7 @@ a {
 }
 
 .delete-line {
-    color: $brand-danger;
+    color: map-get($red, darken-2);
     display: inline-block;
     margin: 0 0.3em;
 }
@@ -105,8 +106,11 @@ a {
     }
 }
 
-.btn-flat {
-  @include button-variant($btn-default-color, $btn-default-bg, transparent);
+.btn-sm {
+    padding: 0 1rem;
+    line-height: 30px;
+    height: 30px;
+    margin-bottom: 5px;
 }
 
 .page-header {
@@ -119,7 +123,11 @@ a {
 }
 
 .form-inline {
+    display: inline-block;
+
     .form-group {
+        display: inline-block;
+
         & + .form-group {
             margin-left: 40px;
         }
@@ -165,16 +173,16 @@ a {
     padding: 0.2em 0;
 }
 
-/* Space out content a bit */
-body {
-    padding-top: 20px;
-    padding-bottom: 20px;
+.container {
+    width: 100%;
 }
-
-.footer {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-    font-size: 0.9em;
-    color: #999;
+@media #{$medium-and-up} {
+  .container {
+    width: 95%;
+  }
+}
+@media #{$large-and-up} {
+  .container {
+    width: 90%;
+  }
 }

@@ -278,6 +278,13 @@ var SvgScribblerApp = React.createClass({
     }
     return null;
   },
+  blurButton: function(event) {
+    var target = $(event.target);
+    if (!target.is('button')) {
+      target = target.closest('button');
+    }
+    target.blur();
+  },
   randomizeStroke: function() {
     var color = randomColor();
     $('#stroke-color-picker').spectrum('set', color);
@@ -286,6 +293,7 @@ var SvgScribblerApp = React.createClass({
       line.stroke = color;
       this.updateLine(line);
     }
+    this.blurButton(event);
   },
   randomizeFill: function() {
     var color = randomColor();
@@ -295,6 +303,7 @@ var SvgScribblerApp = React.createClass({
       line.fill = color;
       this.updateLine(line);
     }
+    this.blurButton(event);
   },
   clearStroke: function() {
     var color = 'transparent';
@@ -304,8 +313,9 @@ var SvgScribblerApp = React.createClass({
       line.stroke = color;
       this.updateLine(line);
     }
+    this.blurButton(event);
   },
-  clearFill: function() {
+  clearFill: function(event) {
     var color = 'transparent';
     $('#fill-color-picker').spectrum('set', color);
     var line = this.getCurrentLine();
@@ -313,6 +323,7 @@ var SvgScribblerApp = React.createClass({
       line.fill = color;
       this.updateLine(line);
     }
+    this.blurButton(event);
   },
   randomizeStrokeWidth: function() {
     var strokeWidth = this.getRandomStrokeWidth();
@@ -321,6 +332,7 @@ var SvgScribblerApp = React.createClass({
       line.strokeWidth = strokeWidth;
       this.updateLine(line);
     }
+    this.blurButton(event);
   },
   setStrokeWidth: function(e) {
     var slider = $(e.target);
@@ -371,99 +383,99 @@ var SvgScribblerApp = React.createClass({
     return (
       <div>
         <div className="page-header clearfix">
-          <button type="button" className="pull-right btn btn-info download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
+          <button type="button" className="pull-right btn download-button" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
             <i className="fa fa-download"></i>
             Download SVG
           </button>
           <h1>SVG Scribbler</h1>
         </div>
-        <div role="tabpanel">
-          <ul className="nav nav-tabs" role="tablist">
-            <li role="presentation" className="active">
-              <a href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
-                Draw
-              </a>
-            </li>
-            <li role="presentation">
-              <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
-                View SVG Source
-              </a>
-            </li>
-          </ul>
-          <div className="tab-content">
-            <div role="tabpanel" className="tab-pane fade in active" id="canvas-tab">
-              <div className="row">
-                <div className="col-sm-9 col-md-10">
-                  <div className="color-controls">
-                    <div className="form-inline">
-                      <div className="form-group">
-                        <strong>
-                          Scribble #{this.state.currentLineID}
-                        </strong>
-                        <a className="delete-line" title="Delete" data-toggle="tooltip" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
-                          <i className="fa fa-remove"></i>
-                        </a>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="stroke-color-picker">Border:</label>
-                        <input type="text" id="stroke-color-picker" className="color-picker" />
-                        <button type="button" className="randomize-color btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
-                          <i className="fa fa-random"></i>
-                        </button>
-                        <button type="button" className="clear-color btn btn-flat btn-sm" data-toggle="tooltip" title="Clear" onClick={this.clearStroke}>
-                          <i className="fa fa-remove"></i>
-                        </button>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="fill-color-picker">Fill:</label>
-                        <input type="text" id="fill-color-picker" className="color-picker" />
-                        <button type="button" className="randomize-color btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeFill}>
-                          <i className="fa fa-random"></i>
-                        </button>
-                        <button type="button" className="clear-color btn btn-flat btn-sm" data-toggle="tooltip" title="Clear" onClick={this.clearFill}>
-                          <i className="fa fa-remove"></i>
-                        </button>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="stroke-width-slider">Border width:</label>
-                        <span className="range-input-wrapper">
-                          <span className="help-inline">
-                            {this.state.minStrokeWidth}
-                          </span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
-                          <span className="help-inline">
-                            {this.state.maxStrokeWidth}
-                          </span>
+        <div role="tabpanel" className="row">
+          <div className="col s12">
+            <ul className="tabs" role="tablist">
+              <li role="presentation" className="tab col s6">
+                <a className="active" href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
+                  Draw
+                </a>
+              </li>
+              <li role="presentation" className="tab col s6">
+                <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
+                  View SVG Source
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div role="tabpanel" className="col s12" id="canvas-tab">
+            <div className="row">
+              <div className="col s8 m9">
+                <div className="color-controls">
+                  <div className="form-inline">
+                    <div className="form-group">
+                      <strong>
+                        Scribble #{this.state.currentLineID}
+                      </strong>
+                      <a className="delete-line" title="Delete" data-toggle="tooltip" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
+                        <i className="fa fa-remove"></i>
+                      </a>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="stroke-color-picker">Border:</label>
+                      <input type="text" id="stroke-color-picker" className="color-picker" />
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
+                        <i className="fa fa-random"></i>
+                      </button>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Clear" onClick={this.clearStroke}>
+                        <i className="fa fa-remove"></i>
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="fill-color-picker">Fill:</label>
+                      <input type="text" id="fill-color-picker" className="color-picker" />
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeFill}>
+                        <i className="fa fa-random"></i>
+                      </button>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Clear" onClick={this.clearFill}>
+                        <i className="fa fa-remove"></i>
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="stroke-width-slider">Border width:</label>
+                      <span className="range-input-wrapper">
+                        <span className="help-inline">
+                          {this.state.minStrokeWidth}
                         </span>
-                        <button type="button" className="randomize-stroke-width btn btn-flat btn-sm" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStrokeWidth}>
-                          <i className="fa fa-random"></i>
-                        </button>
-                      </div>
+                        <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
+                        <span className="help-inline">
+                          {this.state.maxStrokeWidth}
+                        </span>
+                      </span>
+                      <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStrokeWidth}>
+                        <i className="fa fa-random"></i>
+                      </button>
                     </div>
                   </div>
-                  <div className="svg-container clearfix">
-                    <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                      {
-                        this.state.lines.map(function(line) {
-                          if (line.points.length > 1) {
-                            return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
-                          }
-                        })
-                      }
-                    </svg>
-                    <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
-                  </div>
                 </div>
-                <div className="col-sm-3 col-md-2">
-                  <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+                <div className="svg-container clearfix">
+                  <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    {
+                      this.state.lines.map(function(line) {
+                        if (line.points.length > 1) {
+                          return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
+                        }
+                      })
+                    }
+                  </svg>
+                  <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
                 </div>
               </div>
+              <div className="col s3 offset-s1 m2 offset-m1">
+                <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+              </div>
             </div>
-            <div role="tabpanel" className="tab-pane fade" id="source-tab">
-              <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
-    {this.getPolylineSource()}
-  &lt;/svg&gt;</pre>
-            </div>
+          </div>
+          <div role="tabpanel" className="col s12" id="source-tab">
+            <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
+  {this.getPolylineSource()}
+&lt;/svg&gt;</pre>
           </div>
         </div>
       </div>
