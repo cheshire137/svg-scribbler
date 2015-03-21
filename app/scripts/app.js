@@ -492,7 +492,7 @@ var SvgScribblerApp = React.createClass({
             </div>
           </div>
           <div role="tabpanel" className="col s12" id="source-tab">
-            <pre>&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
+            <pre className="svg-source">&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
   {this.getPolylineSource()}
 &lt;/svg&gt;</pre>
           </div>
