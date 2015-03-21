@@ -42,22 +42,42 @@ var SvgScribblerApp = React.createClass({
   onResize: function() {
     this.adjustSvgSize();
   },
+  setCurrentLineStroke: function(color) {
+    var line = this.getCurrentLine();
+    line.stroke = color.toRgbString();
+    this.updateCurrentLine(line);
+    // $('#stroke-color-picker').spectrum('set', color);
+  },
+  setCurrentLineFill: function(color) {
+    var line = this.getCurrentLine();
+    line.fill = color.toRgbString();
+    this.updateCurrentLine(line);
+    // $('#fill-color-picker').spectrum('set', color);
+  },
   componentDidMount: function() {
     var self = this;
     $('#stroke-color-picker').spectrum({
       color: this.state.lines[0].stroke,
       change: function(color) {
-        var line = self.getCurrentLine();
-        line.stroke = color.toRgbString();
-        self.updateCurrentLine(line);
+        self.setCurrentLineStroke(color);
+      },
+      move: function(color) {
+        self.setCurrentLineStroke(color);
+      },
+      hide: function() {
+        $('#stroke-color-picker').spectrum('set', self.getCurrentLine().stroke);
       }
     });
     $('#fill-color-picker').spectrum({
       color: this.state.lines[0].fill,
       change: function(color) {
-        var line = self.getCurrentLine();
-        line.fill = color.toRgbString();
-        self.updateCurrentLine(line);
+        self.setCurrentLineFill(color);
+      },
+      move: function(color) {
+        self.setCurrentLineFill(color);
+      },
+      hide: function() {
+        $('#fill-color-picker').spectrum('set', self.getCurrentLine().fill);
       }
     });
     this.adjustSvgSize();
@@ -389,7 +409,7 @@ var SvgScribblerApp = React.createClass({
           </button>
           <h1>SVG Scribbler</h1>
         </div>
-        <div role="tabpanel" className="row">
+        <div role="tabpanel" className="tab-content row">
           <div className="col s12">
             <ul className="tabs" role="tablist">
               <li role="presentation" className="tab col s6">
@@ -404,7 +424,7 @@ var SvgScribblerApp = React.createClass({
               </li>
             </ul>
           </div>
-          <div role="tabpanel" className="col s12" id="canvas-tab">
+          <div role="tabpanel" className="tab-content col s12" id="canvas-tab">
             <div className="row">
               <div className="col s8 m9">
                 <div className="color-controls">
@@ -418,16 +438,6 @@ var SvgScribblerApp = React.createClass({
                       </a>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="stroke-color-picker">Border:</label>
-                      <input type="text" id="stroke-color-picker" className="color-picker" />
-                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
-                        <i className="fa fa-random"></i>
-                      </button>
-                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Clear" onClick={this.clearStroke}>
-                        <i className="fa fa-remove"></i>
-                      </button>
-                    </div>
-                    <div className="form-group">
                       <label htmlFor="fill-color-picker">Fill:</label>
                       <input type="text" id="fill-color-picker" className="color-picker" />
                       <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeFill}>
@@ -438,7 +448,14 @@ var SvgScribblerApp = React.createClass({
                       </button>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="stroke-width-slider">Border width:</label>
+                      <label htmlFor="stroke-color-picker">Border:</label>
+                      <input type="text" id="stroke-color-picker" className="color-picker" />
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Randomize" onClick={this.randomizeStroke}>
+                        <i className="fa fa-random"></i>
+                      </button>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal" data-toggle="tooltip" title="Clear" onClick={this.clearStroke}>
+                        <i className="fa fa-remove"></i>
+                      </button>
                       <span className="range-input-wrapper">
                         <span className="help-inline">
                           {this.state.minStrokeWidth}

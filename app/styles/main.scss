@@ -36,11 +36,6 @@ a {
     cursor: pointer;
 }
 
-.randomize-color,
-.clear-color {
-    margin-left: 3px;
-}
-
 .range-input-wrapper {
     white-space: nowrap;
 
@@ -111,6 +106,7 @@ a {
     line-height: 30px;
     height: 30px;
     margin-bottom: 5px;
+    margin-left: 5px;
 }
 
 .page-header {
@@ -122,6 +118,10 @@ a {
     }
 }
 
+.tab-content.col {
+    padding-top: 20px;
+}
+
 .form-inline {
     display: inline-block;
 
@@ -129,7 +129,7 @@ a {
         display: inline-block;
 
         & + .form-group {
-            margin-left: 40px;
+            margin-left: 2rem;
         }
     }
 }
