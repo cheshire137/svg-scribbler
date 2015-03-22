@@ -7,20 +7,18 @@ var LinesList = React.createClass({
   render: function() {
     var self = this;
     return (
-      <div>
-        <ul className="lines-list collection with-header">
-          <li className="collection-header">
-            Scribbles
-          </li>
-          {
-            this.props.lines.map(function(line) {
-              return (
-                <LineItem key={line.id} line={line} loadLine={self.props.loadLine} currentLineID={self.props.currentLineID} />
-              );
-            })
-          }
-        </ul>
-      </div>
+      <ul className="side-nav fixed lines-list hide-on-med-and-down">
+        <li className="logo collection-header">
+          Scribbles
+        </li>
+        {
+          this.props.lines.map(function(line) {
+            return (
+              <LineItem key={line.id} line={line} loadLine={self.props.loadLine} currentLineID={self.props.currentLineID} />
+            );
+          })
+        }
+      </ul>
     );
   }
 });

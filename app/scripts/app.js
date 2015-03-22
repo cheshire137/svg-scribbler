@@ -404,108 +404,106 @@ var SvgScribblerApp = React.createClass({
     var self = this;
     return (
       <div>
-        <nav>
-          <div className="nav-wrapper indigo lighten-2">
-            <a href="#" className="brand-logo center">
-              SVG Scribbler
-            </a>
-            <ul className="left">
-              <li>
-                <a href="#" data-delay="20" data-position="right" data-tooltip="Download SVG" className="download-button tooltipped" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
-                  <i className="mdi-file-file-download tiny"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <div className="container main-content">
-          <div role="tabpanel" className="tab-content row">
-            <div className="col s12">
-              <ul className="tabs" role="tablist">
-                <li role="presentation" className="tab col s6">
-                  <a className="active" href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
-                    Draw
-                  </a>
-                </li>
-                <li role="presentation" className="tab col s6">
-                  <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
-                    View SVG Source
+        <header>
+          <nav>
+            <div className="nav-wrapper indigo lighten-2">
+              <a href="#" className="brand-logo center">
+                SVG Scribbler
+              </a>
+              <ul className="left">
+                <li>
+                  <a href="#" data-delay="20" data-position="right" data-tooltip="Download SVG" className="download-button tooltipped" onClick={this.downloadSvg} style={this.downloadButtonStyle()}>
+                    <i className="mdi-file-file-download tiny"></i>
                   </a>
                 </li>
               </ul>
             </div>
-            <div role="tabpanel" className="tab-content col s12" id="canvas-tab">
-              <div className="row">
-                <div className="col s9 m10">
-                  <div className="color-controls">
-                    <div className="form-inline">
-                      <div className="form-group">
-                        <strong>
-                          Scribble #{this.state.currentLineID}
-                        </strong>
-                        <button type="button" className="btn-sm btn-flat waves-effect waves-teal delete-line tooltipped" data-delay="20" data-position="top" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
-                          <i className="mdi-action-delete tiny"></i>
-                        </button>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="fill-color-picker">Fill:</label>
-                        <input type="text" id="fill-color-picker" className="color-picker" />
-                        <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeFill}>
-                          <i className="mdi-action-cached tiny"></i>
-                        </button>
-                        <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearFill}>
-                          <i className="mdi-content-clear tiny"></i>
-                        </button>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="stroke-color-picker">Border:</label>
-                        <input type="text" id="stroke-color-picker" className="color-picker" />
-                        <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStroke}>
-                          <i className="mdi-action-cached tiny"></i>
-                        </button>
-                        <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearStroke}>
-                          <i className="mdi-content-clear tiny"></i>
-                        </button>
-                        <span className="range-input-wrapper">
-                          <span className="help-inline">
-                            {this.state.minStrokeWidth}
-                          </span>
-                          <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
-                          <span className="help-inline">
-                            {this.state.maxStrokeWidth}
-                          </span>
+          </nav>
+        </header>
+        <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+        <main>
+          <div className="container main-content">
+            <div role="tabpanel" className="tab-content row">
+              <div className="col s12">
+                <ul className="tabs" role="tablist">
+                  <li role="presentation" className="tab col s6">
+                    <a className="active" href="#canvas-tab" aria-controls="canvas-tab" role="tab" data-toggle="tab">
+                      Draw
+                    </a>
+                  </li>
+                  <li role="presentation" className="tab col s6">
+                    <a href="#source-tab" aria-controls="source-tab" role="tab" data-toggle="tab">
+                      View SVG Source
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div role="tabpanel" className="tab-content col s12" id="canvas-tab">
+                <div className="color-controls">
+                  <div className="form-inline">
+                    <div className="form-group">
+                      <strong>
+                        Scribble #{this.state.currentLineID}
+                      </strong>
+                      <button type="button" className="btn-sm btn-flat waves-effect waves-teal delete-line tooltipped" data-delay="20" data-position="top" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
+                        <i className="mdi-action-delete tiny"></i>
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="fill-color-picker">Fill:</label>
+                      <input type="text" id="fill-color-picker" className="color-picker" />
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeFill}>
+                        <i className="mdi-action-cached tiny"></i>
+                      </button>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearFill}>
+                        <i className="mdi-content-clear tiny"></i>
+                      </button>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="stroke-color-picker">Border:</label>
+                      <input type="text" id="stroke-color-picker" className="color-picker" />
+                      <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStroke}>
+                        <i className="mdi-action-cached tiny"></i>
+                      </button>
+                      <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearStroke}>
+                        <i className="mdi-content-clear tiny"></i>
+                      </button>
+                      <span className="range-input-wrapper">
+                        <span className="help-inline">
+                          {this.state.minStrokeWidth}
                         </span>
-                        <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStrokeWidth}>
-                          <i className="mdi-action-cached tiny"></i>
-                        </button>
-                      </div>
+                        <input onInput={this.setStrokeWidth} type="range" id="stroke-width-slider" min={this.state.minStrokeWidth} value={this.getCurrentLineStrokeWidth()} step="1" max={this.state.maxStrokeWidth} />
+                        <span className="help-inline">
+                          {this.state.maxStrokeWidth}
+                        </span>
+                      </span>
+                      <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStrokeWidth}>
+                        <i className="mdi-action-cached tiny"></i>
+                      </button>
                     </div>
                   </div>
-                  <div className="svg-container clearfix">
-                    <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                      {
-                        this.state.lines.map(function(line) {
-                          if (line.points.length > 1) {
-                            return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
-                          }
-                        })
-                      }
-                    </svg>
-                    <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
-                  </div>
                 </div>
-                <div className="col s3 m2">
-                  <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+                <div className="svg-container clearfix">
+                  <svg className="svg-result" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    {
+                      this.state.lines.map(function(line) {
+                        if (line.points.length > 1) {
+                          return <polyline points={self.getPointsList(line)} style={self.getPolylineStyle(line)} />
+                        }
+                      })
+                    }
+                  </svg>
+                  <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
                 </div>
               </div>
-            </div>
-            <div role="tabpanel" className="col s12" id="source-tab">
-              <pre className="svg-source">&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
-    {this.getPolylineSource()}
-  &lt;/svg&gt;</pre>
+              <div role="tabpanel" className="col s12" id="source-tab">
+                <pre className="svg-source">&lt;svg version="1.1" xmlns="http://www.w3.org/2000/svg"&gt;<br />
+      {this.getPolylineSource()}
+    &lt;/svg&gt;</pre>
+              </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }

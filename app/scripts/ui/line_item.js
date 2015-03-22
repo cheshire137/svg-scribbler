@@ -28,22 +28,32 @@ var LineItem = React.createClass({
   loadLine: function() {
     this.props.loadLine(this.props.line);
   },
+  isCurrentLine: function() {
+    return this.props.currentLineID === this.props.line.id;
+  },
   getLineClass: function() {
-    var cssClass = 'collection-item line-item';
+    var cssClass = 'bold line-item';
     if (this.props.line.points.length < 2) {
       cssClass += ' next-line';
     }
-    if (this.props.currentLineID === this.props.line.id) {
-      cssClass += ' current-line';
+    if (this.isCurrentLine()) {
+      cssClass += ' active';
     } else {
       cssClass += ' not-current-line';
+    }
+    return cssClass;
+  },
+  getLinkClass: function() {
+    var cssClass = 'tooltipped';
+    if (this.isCurrentLine()) {
+      cssClass += ' active';
     }
     return cssClass;
   },
   render: function() {
     return (
       <li className={this.getLineClass()}>
-        <a onClick={this.loadLine} className="tooltipped" data-delay="20" data-position="left" data-tooltip={this.getLineTitle()}>
+        <a onClick={this.loadLine} className={this.getLinkClass()} data-delay="20" data-position="right" data-tooltip={this.getLineTitle()}>
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>
       </li>

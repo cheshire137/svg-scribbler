@@ -12,6 +12,10 @@ body {
     flex-direction: column;
 }
 
+header, main, footer {
+    padding-left: 240px;
+}
+
 main {
     flex: 1 0 auto;
 }
@@ -62,27 +66,31 @@ a {
     margin: 0 0.3em;
 }
 
+ul.side-nav.fixed {
+    overflow: auto;
+
+    li {
+        line-height: 44px;
+
+        a {
+            font-size: 13px;
+        }
+    }
+}
+
 .lines-list {
     .collection-header {
         text-transform: uppercase;
         font-weight: 600;
+        color: #000;
     }
 
     .line-item {
         position: relative;
+        border-left: 20px solid transparent;
 
         &.next-line {
-            &:before {
-                content: "Next:";
-            }
-        }
-
-        &.current-line {
-            background-color: color("indigo", "lighten-5");
-        }
-
-        .line-settings {
-            display: none;
+            border-left-color: color("indigo", "lighten-2");
         }
 
         .line-representation {
