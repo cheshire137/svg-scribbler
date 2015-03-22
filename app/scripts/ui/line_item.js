@@ -29,7 +29,7 @@ var LineItem = React.createClass({
     this.props.loadLine(this.props.line);
   },
   getLineClass: function() {
-    var cssClass = 'line-item';
+    var cssClass = 'collection-item line-item';
     if (this.props.line.points.length < 2) {
       cssClass += ' next-line';
     }
@@ -43,9 +43,6 @@ var LineItem = React.createClass({
   render: function() {
     return (
       <li className={this.getLineClass()}>
-        <span className="current-indicator">
-          <i className="fa fa-chevron-right"></i>
-        </span>
         <a onClick={this.loadLine} className="tooltipped" data-delay="20" data-position="left" data-tooltip={this.getLineTitle()}>
           <span className="line-representation" style={this.getLineStyle()}></span>
         </a>

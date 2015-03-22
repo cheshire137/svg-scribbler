@@ -8,8 +8,10 @@ var LinesList = React.createClass({
     var self = this;
     return (
       <div>
-        <h4>Scribbles:</h4>
-        <ul className="lines-list list-unstyled">
+        <ul className="lines-list collection with-header">
+          <li className="collection-header">
+            Scribbles
+          </li>
           {
             this.props.lines.map(function(line) {
               return (

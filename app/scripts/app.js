@@ -405,7 +405,7 @@ var SvgScribblerApp = React.createClass({
     return (
       <div>
         <nav>
-          <div className="nav-wrapper">
+          <div className="nav-wrapper indigo lighten-2">
             <a href="#" className="brand-logo center">
               SVG Scribbler
             </a>
@@ -436,7 +436,7 @@ var SvgScribblerApp = React.createClass({
             </div>
             <div role="tabpanel" className="tab-content col s12" id="canvas-tab">
               <div className="row">
-                <div className="col s8 m9">
+                <div className="col s9 m10">
                   <div className="color-controls">
                     <div className="form-inline">
                       <div className="form-group">
@@ -494,7 +494,7 @@ var SvgScribblerApp = React.createClass({
                     <canvas className="svg-canvas" onMouseDown={this.onMouseDown} onMouseMove={this.onMouseMove} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseLeave}></canvas>
                   </div>
                 </div>
-                <div className="col s3 offset-s1 m2 offset-m1">
+                <div className="col s3 m2">
                   <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
                 </div>
               </div>

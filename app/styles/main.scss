@@ -47,12 +47,17 @@ a {
 }
 
 .delete-line {
-    color: map-get($red, darken-2);
+    color: color("red", "darken-2");
     display: inline-block;
     margin: 0 0.3em;
 }
 
 .lines-list {
+    .collection-header {
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
     .line-item {
         position: relative;
 
@@ -62,28 +67,12 @@ a {
             }
         }
 
-        .current-indicator {
-            position: absolute;
-            left: -14px;
-            bottom: 3px;
-            display: none;
-        }
-
         &.current-line {
-            .current-indicator {
-                display: inline-block;
-            }
+            background-color: color("indigo", "lighten-5");
         }
 
         .line-settings {
             display: none;
-        }
-
-        .color-square {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin: 0 0.3em;
         }
 
         .line-representation {
@@ -92,10 +81,6 @@ a {
             height: 15px;
             border-style: solid;
             border-radius: 2px;
-        }
-
-        & + .line-item {
-            margin-top: 5px;
         }
     }
 }
