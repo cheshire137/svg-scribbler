@@ -10,7 +10,7 @@ var LinesList = React.createClass({
       <ul className="collapsible collapsible-accordion">
         <li className="bold">
           <a className="collapsible-header active waves-effect waves-teal">
-            Scribbles<i className="mdi-navigation-arrow-drop-down"></i>
+            Scribbles
           </a>
           <div className="collapsible-body">
             <ul>

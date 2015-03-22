@@ -46,13 +46,11 @@ var SvgScribblerApp = React.createClass({
     var line = this.getCurrentLine();
     line.stroke = color.toRgbString();
     this.updateCurrentLine(line);
-    // $('#stroke-color-picker').spectrum('set', color);
   },
   setCurrentLineFill: function(color) {
     var line = this.getCurrentLine();
     line.fill = color.toRgbString();
     this.updateCurrentLine(line);
-    // $('#fill-color-picker').spectrum('set', color);
   },
   componentDidMount: function() {
     var self = this;
@@ -400,6 +398,20 @@ var SvgScribblerApp = React.createClass({
     }
     return {display: display};
   },
+  selectBrush: function(event) {
+    var line = this.getCurrentLine();
+    if (!line) {
+      return;
+    }
+    var target = $(event.target);
+    var brush = target.attr('data-brush');
+    if (brush === 'pencil') {
+      line.strokeWidth = 2;
+      line.fill = 'transparent';
+      this.updateLine(line);
+      $('#fill-color-picker').spectrum('set', line.fill);
+    }
+  },
   render: function() {
     var self = this;
     return (
@@ -421,6 +433,24 @@ var SvgScribblerApp = React.createClass({
           </nav>
         </header>
         <ul className="side-nav fixed lines-list hide-on-med-and-down">
+          <li className="no-padding">
+            <ul className="collapsible collapsible-accordion">
+              <li className="bold">
+                <a className="collapsible-header active waves-effect waves-teal">
+                  Brushes
+                </a>
+                <div className="collapsible-body">
+                  <ul>
+                    <li className="bold">
+                      <a href="#" onClick={this.selectBrush} data-brush="pencil">
+                        Pencil
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </li>
           <li className="no-padding">
             <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
           </li>
