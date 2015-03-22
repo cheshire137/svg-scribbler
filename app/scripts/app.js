@@ -420,7 +420,11 @@ var SvgScribblerApp = React.createClass({
             </div>
           </nav>
         </header>
-        <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+        <ul className="side-nav fixed lines-list hide-on-med-and-down">
+          <li className="no-padding">
+            <LinesList lines={this.state.lines} loadLine={this.loadLine} currentLineID={this.state.currentLineID} />
+          </li>
+        </ul>
         <main>
           <div className="container main-content">
             <div role="tabpanel" className="tab-content row">

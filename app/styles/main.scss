@@ -69,34 +69,45 @@ a {
 ul.side-nav.fixed {
     overflow: auto;
 
+    .collapsible-body {
+        li.active {
+            background-color: #DDD;
+        }
+    }
+
     li {
         line-height: 44px;
 
         a {
             font-size: 13px;
+            padding: 0 2em;
+
+            &.collapsible-header {
+                font-weight: 600;
+                padding: 0;
+            }
         }
     }
 }
 
 .lines-list {
-    .collection-header {
-        text-transform: uppercase;
-        font-weight: 600;
-        color: #000;
-    }
-
     .line-item {
         position: relative;
-        border-left: 20px solid transparent;
 
         &.next-line {
-            border-left-color: color("indigo", "lighten-2");
+            &:before {
+                position: absolute;
+                left: 1rem;
+                font-size: 13px;
+                content: "Next";
+            }
         }
 
         .line-representation {
             display: inline-block;
             width: 100%;
-            height: 15px;
+            height: 20px;
+            vertical-align: middle;
             border-style: solid;
             border-radius: 2px;
         }
