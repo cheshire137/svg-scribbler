@@ -6,6 +6,16 @@ $icons-font-path: "../bower_components/materialize/font/material-design-icons/";
 
 $toolbar-button-padding: 0.5rem;
 
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
 .clearfix:before, .clearfix:after {
     content: " ";
     display: table;
