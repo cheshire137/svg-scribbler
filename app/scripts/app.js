@@ -443,28 +443,28 @@ var SvgScribblerApp = React.createClass({
                         <strong>
                           Scribble #{this.state.currentLineID}
                         </strong>
-                        <a className="delete-line tooltipped" data-delay="20" data-position="top" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
-                          <i className="fa fa-trash-o"></i>
-                        </a>
+                        <button type="button" className="btn-sm btn-flat waves-effect waves-teal delete-line tooltipped" data-delay="20" data-position="top" data-tooltip="Delete" onClick={this.deleteCurrentLine} style={this.getDeleteLineStyle()}>
+                          <i className="mdi-action-delete tiny"></i>
+                        </button>
                       </div>
                       <div className="form-group">
                         <label htmlFor="fill-color-picker">Fill:</label>
                         <input type="text" id="fill-color-picker" className="color-picker" />
                         <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeFill}>
-                          <i className="fa fa-random"></i>
+                          <i className="mdi-action-cached tiny"></i>
                         </button>
                         <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearFill}>
-                          <i className="fa fa-remove"></i>
+                          <i className="mdi-content-clear tiny"></i>
                         </button>
                       </div>
                       <div className="form-group">
                         <label htmlFor="stroke-color-picker">Border:</label>
                         <input type="text" id="stroke-color-picker" className="color-picker" />
                         <button type="button" className="randomize-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStroke}>
-                          <i className="fa fa-random"></i>
+                          <i className="mdi-action-cached tiny"></i>
                         </button>
                         <button type="button" className="clear-color btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Clear" onClick={this.clearStroke}>
-                          <i className="fa fa-remove"></i>
+                          <i className="mdi-content-clear tiny"></i>
                         </button>
                         <span className="range-input-wrapper">
                           <span className="help-inline">
@@ -476,7 +476,7 @@ var SvgScribblerApp = React.createClass({
                           </span>
                         </span>
                         <button type="button" className="randomize-stroke-width btn-sm btn-flat waves-effect waves-teal tooltipped" data-delay="20" data-position="top" data-tooltip="Randomize" onClick={this.randomizeStrokeWidth}>
-                          <i className="fa fa-random"></i>
+                          <i className="mdi-action-cached tiny"></i>
                         </button>
                       </div>
                     </div>
