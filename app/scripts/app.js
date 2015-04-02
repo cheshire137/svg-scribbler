@@ -410,7 +410,19 @@ var SvgScribblerApp = React.createClass({
       line.fill = 'transparent';
       this.updateLine(line);
       $('#fill-color-picker').spectrum('set', line.fill);
+    } else if (brush === 'pen') {
+      line.strokeWidth = 1;
+      line.fill = 'transparent';
+      this.updateLine(line);
+      $('#fill-color-picker').spectrum('set', line.fill);
     }
+  },
+  getBrushRepresentationStyle: function() {
+    var line = this.getCurrentLine();
+    if (!line) {
+      return {};
+    }
+    return {borderColor: line.stroke};
   },
   render: function() {
     var self = this;
@@ -443,7 +455,14 @@ var SvgScribblerApp = React.createClass({
                   <ul>
                     <li className="bold">
                       <a href="#" onClick={this.selectBrush} data-brush="pencil">
+                        <span className="brush-representation pencil" style={this.getBrushRepresentationStyle()}></span>
                         Pencil
+                      </a>
+                    </li>
+                    <li className="bold">
+                      <a href="#" onClick={this.selectBrush} data-brush="pen">
+                        <span className="brush-representation pen" style={this.getBrushRepresentationStyle()}></span>
+                        Pen
                       </a>
                     </li>
                   </ul>
