@@ -9,7 +9,7 @@ The app runs at [http://localhost:3000](http://localhost:3000/).
 
 ## Screenshot
 
-![Screenshot of SVG Scribbler](https://raw.githubusercontent.com/moneypenny/svg-scribbler/master/screenshot.png)
+![Screenshot of SVG Scribbler](https://raw.githubusercontent.com/cheshire137/svg-scribbler/master/screenshot.png)
 
 ## How to Deploy to Github Pages
 
